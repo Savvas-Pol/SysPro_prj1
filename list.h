@@ -8,9 +8,9 @@ typedef struct List{
 
 }List;
 
-List* list_search();
-void list_insert();
-void list_delete();
+List* list_search(List* l, int num);
+void list_insert(List* l);
+void list_delete(List* l);
 
 
 

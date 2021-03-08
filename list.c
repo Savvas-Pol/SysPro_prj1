@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "list.h"
@@ -49,13 +50,36 @@ void list_insert(List* l, int num){
 
 void list_delete(List* l, int num){
 	
-	// List* temp = l;
-	// List* temp2 = NULL;
-	// int flag = 0;
+	List* temp = l;
+	List* temp2 = NULL;
+	int first = 1;
 
-	// while((temp != NULL) && !flag){
-	// 	if(num == temp->num){
-	// 		flag = 1;
-	// 	}
-	// }
+	while(temp != NULL){
+		if(num == temp->num){
+			if(first)
+				l= temp->next;
+			else
+				temp2->next = temp->next;
+			
+			free(temp->next);
+			free(temp);
+			break;
+		}
+		first = 0;
+		temp2 = temp;
+		temp = temp->next;
+	}
+}
+
+void print_list(List* l){
+
+	List* temp = l;
+
+	if(temp == NULL)
+		printf("Empty List\n");
+	else{
+		while(temp != NULL){
+			printf("Num = %d\n", temp->num);
+		}
+	}
 }

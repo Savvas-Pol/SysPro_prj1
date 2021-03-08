@@ -1,6 +1,17 @@
 #ifndef LIST_H
 #define LIST_H
 
+typedef struct Citizen{
+	
+	char* citizenID;
+	char* firstName;
+	char* lastName;
+	char* country;
+	int age;
+	char* virusName;
+	char* dateVaccinated;
+}Citizen;
+
 typedef struct List{
 	
 	int num;
@@ -8,9 +19,10 @@ typedef struct List{
 
 }List;
 
+
 List* list_search(List* l, int num);
-void list_insert(List* l);
-void list_delete(List* l);
+void list_insert(List* l, int num);
+void list_delete(List* l, int num);
 
 
 

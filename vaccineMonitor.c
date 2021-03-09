@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "list.h"
+#include "BF.h"
 
 int main(int argc, char** argv){
 	
@@ -11,6 +12,7 @@ int main(int argc, char** argv){
 	int i, bloomSize;
 
 	List* l = NULL;
+	BF* bloom;
 
 	FILE* citizenRecordsFile;
 
@@ -34,7 +36,7 @@ int main(int argc, char** argv){
 		}
 	}
 
-	
+	bloom = bloom_init(bloomSize);
 
 	
 	return 0;

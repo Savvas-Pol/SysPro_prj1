@@ -61,7 +61,6 @@ void list_delete(List** l, int num){
 			else
 				temp2->next = temp->next;
 			
-			free(temp->next);
 			free(temp);
 			break;
 		}

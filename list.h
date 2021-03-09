@@ -21,8 +21,8 @@ typedef struct List{
 
 
 List* list_search(List* l, int num);
-void list_insert(List* l, int num);
-void list_delete(List* l, int num);
+void list_insert(List** l, int num);
+void list_delete(List** l, int num);
 void print_list(List* l);
 
 

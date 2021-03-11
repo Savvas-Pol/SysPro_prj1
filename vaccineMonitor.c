@@ -10,6 +10,11 @@ int main(int argc, char** argv){
 	/*	---		DECLARATIONS	---	*/
 
 	int i, bloomSize;
+	char* token;
+
+	char* line = NULL;
+	size_t len = 0;
+	ssize_t read;
 
 	List* l = NULL;
 	BF* bloom;
@@ -36,8 +41,42 @@ int main(int argc, char** argv){
 		}
 	}
 
-	bloom = bloom_init(bloomSize);
+	// bloom = bloom_init(bloomSize);
 
+	while((read = getline(&line, &len, citizenRecordsFile)) != -1){					//line by line
+		token = strtok(line, " \n");												//word by word
+		i = 0;
+		while(token != NULL){
+			
+			// if(i == 0){
+			// 	printf("%d : %s\n", i, token);
+			// }
+			// else if(i == 1){
+			// 	printf("%d : %s\n", i, token);
+			// }
+			// else if(i == 2){
+			// 	printf("%d : %s\n", i, token);
+			// }
+			// else if(i == 3){
+			// 	printf("%d : %s\n", i, token);
+			// }
+			// else if(i == 4){
+			// 	printf("%d : %s\n", i, token);
+			// }
+			// else if(i == 5){
+			// 	printf("%d : %s\n", i, token);
+			// }
+			// else if(i == 6){
+			// 	printf("%d : %s\n", i, token);
+			// }
+			// else if(i == 7){
+			// 	printf("%d : %s\n", i, token);
+			// }
+			
+			token = strtok(NULL, " \n");
+			i++;
+		}
+	}
 	
 	return 0;
 }

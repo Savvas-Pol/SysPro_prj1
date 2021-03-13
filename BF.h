@@ -17,7 +17,7 @@ unsigned long hash_i(unsigned char *str, unsigned int i);
 
 BF* bloom_init(int n);
 
-void bloom_filter(BF** b, char* str);
+void bloom_filter(BF** b, char* str, int K);
 
 
 

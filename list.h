@@ -8,8 +8,8 @@ typedef struct Date{
 	int year;
 }Date;
 
-typedef struct Citizen{
-	
+typedef struct Record{
+
 	char* citizenID;
 	char* firstName;
 	char* lastName;
@@ -17,6 +17,17 @@ typedef struct Citizen{
 	int age;
 	char* virusName;
 	Date* dateVaccinated;
+	
+}Record;
+
+typedef struct Citizen{
+	
+	char* citizenID;
+	char* firstName;
+	char* lastName;
+	char* country;
+	int age;
+	
 }Citizen;
 
 typedef struct List{

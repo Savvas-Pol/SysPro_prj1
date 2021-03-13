@@ -6,6 +6,7 @@
 #include "hashtable.h"
 #include "BF.h"
 
+#define K 16			// K for Hash Functions
 #define MAXLEVEL 4		// Skip List Level
 #define HASHNODES 20	// HashTable for Diseases
 
@@ -21,6 +22,7 @@ int main(int argc, char** argv){
 	ssize_t read;
 
 	Record temp;
+	Node* node;
 
 	List* l = NULL;
 	BF* bloom;
@@ -47,7 +49,6 @@ int main(int argc, char** argv){
 		}
 	}
 
-	// bloom = bloom_init(bloomSize);
 	Node** ht = (Node**)malloc(HASHNODES*sizeof(Node*));		//create hashtable for diseases
 	for(i = 0; i < HASHNODES; i++){
 		ht[i] = NULL;
@@ -110,7 +111,10 @@ int main(int argc, char** argv){
 		// else
 		// 	printf("\n");
 		pos = hash_function(temp.virusName, HASHNODES);
-		hash_insert(ht, pos, temp.virusName);
+		if(hash_search(ht, pos, temp.virusName) == NULL){
+			node = hash_insert(ht, pos, temp.virusName);
+			node->bloom = bloom_init(bloomSize);
+		}
 	}
 	
 	return 0;

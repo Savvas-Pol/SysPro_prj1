@@ -28,7 +28,7 @@ Node* hash_search(Node** ht, int pos, char* virusName){
 	return temp;
 }
 
-void hash_insert(Node** ht, int pos, char* virusName){
+Node* hash_insert(Node** ht, int pos, char* virusName){
 
 	Node* new;
 	Node* temp = ht[pos];
@@ -45,12 +45,14 @@ void hash_insert(Node** ht, int pos, char* virusName){
 		while(temp != NULL){
 			if(temp->next == NULL){
 				temp->next = new;
-				return;
+				return new;
 			}
 			else
 				temp = temp->next;
 		}
 	}
+
+	return new;
 
 }
 

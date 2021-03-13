@@ -3,6 +3,30 @@
 
 #include "BF.h"
 
+unsigned long djb2(unsigned char *str) {
+	int c;
+	unsigned long hash = 5381;
+
+	while ((c = *str++))
+		hash = ((hash << 5) + hash) + c; // hash * 33 + c
+
+	return hash;
+}
+
+unsigned long sdbm(unsigned char *str) {
+	int c;
+	unsigned long hash = 0;
+
+	while ((c = *str++))
+		hash = c + (hash << 6) + (hash << 16) - hash;
+
+	return hash;
+}
+
+unsigned long hash_i(unsigned char *str, unsigned int i) {
+	return djb2(str) + i * sdbm(str) + i * i;
+}
+
 
 BF* bloom_init(int bloomSize){
 	
@@ -25,20 +49,10 @@ BF* bloom_init(int bloomSize){
 }
 
 
-void bloom_filter(BF** b, char* id){
+void bloom_filter(BF** b, char* str){
 	
 	int pos;
 	
-	// pos = bloom_hash1((*b)->size,id);
-	// if((*b)->vector[pos] == 0)
-	// 	(*b)->vector[pos] = 1;
 	
-	// pos = bloom_hash2((*b)->size,id);
-	// if((*b)->vector[pos] == 0)
-	// 	(*b)->vector[pos] = 1;
-	
-	// pos = bloom_hash3((*b)->size,id);
-	// if((*b)->vector[pos] == 0)
-	// 	(*b)->vector[pos] = 1;
 	
 }

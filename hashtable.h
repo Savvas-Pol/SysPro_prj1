@@ -17,7 +17,7 @@ typedef struct Node{
 int hash_function(unsigned char *str, int buckets);
 
 Node* hash_search(Node** ht, int pos, char* virusName);
-void hash_insert(Node** ht, int pos, char* virusName);
+Node* hash_insert(Node** ht, int pos, char* virusName);
 void hash_delete(Node** ht, int pos, char* virusName);
 
 #endif

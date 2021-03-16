@@ -4,76 +4,104 @@
 
 #include "hashtable.h"
 
-int hash_function(unsigned char *str, int buckets){
+Hashtable* hash_create(int HASHNODES) {
+    int i;
+    Hashtable* ht = malloc(sizeof (Hashtable));
+    ht->hash_nodes = HASHNODES;
+
+    ht->nodes = (HashtableNode**) malloc(HASHNODES * sizeof (HashtableNode*)); //create hashtable for diseases
+    for (i = 0; i < HASHNODES; i++) {
+        ht->nodes[i] = NULL;
+    }
+
+    return ht;
+}
+
+void hash_destroy(Hashtable* ht) {
+    int i;
+
+    for (i = 0; i < ht->hash_nodes; i++) {
+        HashtableNode* temp = ht->nodes[i];
+
+        while (temp != NULL) {
+            ht->nodes[i] = temp->next;
+
+            bloom_destroy(temp->bloom);
+            free(temp->virusName);
+            free(temp);
+            
+            temp = ht->nodes[i];
+        }
+    }
+
+    free(ht->nodes);
+    free(ht);
+}
+
+int hash_function(unsigned char *str, int buckets) {
 
     unsigned long hash = 5381;
     int c;
 
-    while (c = *str++)
+    while ((c = *str++) != '\0') {
         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+    }
 
     return hash % buckets;
 }
 
-Node* hash_search(Node** ht, int pos, char* virusName){
+HashtableNode* hash_search(Hashtable* ht, char* virusName) {
 
-	Node* temp = ht[pos];
+    int pos = hash_function((unsigned char*) virusName, ht->hash_nodes);
 
-	while(temp != NULL){
-		if(!strcmp(temp->virusName, virusName))
-			return temp;
-		
-		temp = temp->next;
-	}
-	return temp;
+    HashtableNode* temp = ht->nodes[pos];
+
+    while (temp != NULL) {
+        if (!strcmp(temp->virusName, virusName))
+            return temp;
+
+        temp = temp->next;
+    }
+    return temp;
 }
 
-Node* hash_insert(Node** ht, int pos, char* virusName){
+HashtableNode* hash_insert(Hashtable* ht, char* virusName) {
 
-	Node* new;
-	Node* temp = ht[pos];
+    int pos = hash_function((unsigned char*) virusName, ht->hash_nodes);
 
-	new = (Node*)malloc(sizeof(Node));
+    HashtableNode* new;
+    HashtableNode* temp = ht->nodes[pos];
 
-	new->virusName = (char*)malloc(strlen(virusName));
-	strcpy(new->virusName, virusName);
-	new->next = NULL;
+    new = (HashtableNode*) malloc(sizeof (HashtableNode));
 
-	if(ht[pos] == NULL)
-		ht[pos] = new;
-	else{
-		while(temp != NULL){
-			if(temp->next == NULL){
-				temp->next = new;
-				return new;
-			}
-			else
-				temp = temp->next;
-		}
-	}
+    new->virusName = (char*) malloc(strlen(virusName) + 1);
+    strcpy(new->virusName, virusName);
+    new->next = ht->nodes[pos];
+    ht->nodes[pos] = new;
 
-	return new;
-
+    return new;
 }
 
-void hash_delete(Node** ht, int pos, char* virusName){
+void hash_delete(Hashtable* ht, char* virusName) {
 
-	Node* temp = ht[pos], *temp2;
-	int first = 1;					// flag to check if we are in first node
+    int pos = hash_function((unsigned char*) virusName, ht->hash_nodes);
 
-	while(temp != NULL){
-		if(!strcmp(temp->virusName, virusName)){
-			if(first)
-				ht[pos] = temp->next;
-			else
-				temp2->next = temp->next;
+    HashtableNode* temp = ht->nodes[pos], *temp2;
+    int first = 1; // flag to check if we are in first node
 
-			free(temp->virusName);
-			free(temp);
-			return;
-		}
-		temp2 = temp;
-		temp = temp->next;
-		first = 0;
-	}
+    while (temp != NULL) {
+        if (!strcmp(temp->virusName, virusName)) {
+            if (first)
+                ht->nodes[pos] = temp->next;
+            else
+                temp2->next = temp->next;
+
+            free(temp->virusName);
+            free(temp);
+            return;
+        }
+        temp2 = temp;
+        temp = temp->next;
+        first = 0;
+    }
 }

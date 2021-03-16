@@ -1,23 +1,32 @@
-#ifndef HASHTABLE_H__
-#define	HASHTABLE_H__
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
 
 #include "list.h"
 #include "BF.h"
 
-typedef struct Node{
+typedef struct HashtableNode {
+    char* virusName;
+    BF* bloom;
+    List* vaccinated_persons;
+    List* not_vaccinated_persons;
+    struct HashtableNode* next; //pointer to next bucket node
+} HashtableNode;
 
-	char* virusName;
-	BF* bloom;
-	List* vaccinated_persons;
-	List* not_vaccinated_persons;
-	struct Node* next;	//pointer to next bucket node
-
-}Node;
+typedef struct Hashtable {
+    HashtableNode** nodes;
+    int hash_nodes;
+} Hashtable;
 
 int hash_function(unsigned char *str, int buckets);
 
-Node* hash_search(Node** ht, int pos, char* virusName);
-Node* hash_insert(Node** ht, int pos, char* virusName);
-void hash_delete(Node** ht, int pos, char* virusName);
+Hashtable* hash_create(int HASHNODES);
+void hash_destroy(Hashtable* ht);
+
+HashtableNode* hash_search(Hashtable* ht, char* virusName);
+HashtableNode* hash_insert(Hashtable* ht, char* virusName);
+void hash_delete(Hashtable* ht, char* virusName);
+
+
+
 
 #endif

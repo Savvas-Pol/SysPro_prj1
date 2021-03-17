@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
     ssize_t read;
 
     Record temp;
-    HashtableNode* node;
+    HashtableNode* hashNode;
 
     List* l = NULL;
     BF* bloom;
@@ -37,22 +37,27 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    Hashtable* ht = hash_create(HASHTABLE_NODES);
+    Hashtable* ht_viruses = hash_create(HASHTABLE_NODES);
+    Hashtable* ht_citizens = hash_create(HASHTABLE_NODES);
+    Hashtable* ht_countries = hash_create(HASHTABLE_NODES);
 
     while ((read = getline(&line, &len, citizenRecordsFile)) != -1) { //line by line
         
         create_temp_node(line, token, &temp);
 
-        if (hash_search(ht, temp.virusName) == NULL) {
-            node = hash_insert(ht, temp.virusName);
-            node->bloom = bloom_init(bloomSize);
-            // node->skiplist_1 = skiplist_init(maxLevel);
-            // node->skiplist_2 = skiplist_init(maxLevel);
+        if (hash_search(ht_viruses, temp.virusName) == NULL) {
+            hashNode = hash_insert(ht_viruses, temp.virusName);
+            hashNode->bloom = bloom_init(bloomSize);
+            // hashNode->vaccinated_persons = skiplist_init(maxLevel);
+            // hashNode->not_vaccinated_persons = skiplist_init(maxLevel);
         }
+        bloom_filter(hashNode->bloom, temp.virusName, K);
 
         free_temp_node(&temp);
 
     }
+
+    //waiting input from user
 
     if (line != NULL) {
         free(line);
@@ -60,7 +65,9 @@ int main(int argc, char** argv) {
 
     fclose(citizenRecordsFile);
 
-    hash_destroy(ht);
+    hash_destroy(ht_viruses);
+    hash_destroy(ht_citizens);
+    hash_destroy(ht_countries);
 
     return 0;
 }

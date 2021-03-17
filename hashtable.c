@@ -4,13 +4,15 @@
 
 #include "hashtable.h"
 
-Hashtable* hash_create(int HASHNODES) {
-    int i;
-    Hashtable* ht = malloc(sizeof (Hashtable));
-    ht->hash_nodes = HASHNODES;
+Hashtable* hash_create(int hashNodes) {
 
-    ht->nodes = (HashtableNode**) malloc(HASHNODES * sizeof (HashtableNode*)); //create hashtable for diseases
-    for (i = 0; i < HASHNODES; i++) {
+    int i;
+    
+    Hashtable* ht = malloc(sizeof (Hashtable));
+    ht->hash_nodes = hashNodes;
+
+    ht->nodes = (HashtableNode**) malloc(hashNodes * sizeof (HashtableNode*)); //create hashtable for diseases
+    for (i = 0; i < hashNodes; i++) {
         ht->nodes[i] = NULL;
     }
 
@@ -18,6 +20,7 @@ Hashtable* hash_create(int HASHNODES) {
 }
 
 void hash_destroy(Hashtable* ht) {
+
     int i;
 
     for (i = 0; i < ht->hash_nodes; i++) {

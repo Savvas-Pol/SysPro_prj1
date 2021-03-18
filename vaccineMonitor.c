@@ -60,6 +60,22 @@ int main(int argc, char** argv) {
     }
 
     //waiting input from user
+    char* command = (char*)malloc(50*sizeof(char));
+    while(1){
+        printf("\nGive command...\n");
+        scanf("%[^\n]s", command);
+
+        token = strtok(command, " \n");
+
+        while(token != NULL){
+
+            if(!strcmp(token, "/exit")){
+                //frees
+                return 0;
+            }
+            token = strtok(NULL, " \n");
+        }
+    }
 
     if (line != NULL) {
         free(line);

@@ -1,7 +1,7 @@
 #ifndef RECORD_H
 #define RECORD_H
 
-#include "Date.h"
+#include "date.h"
 
 typedef struct Record {
     char* citizenID;

@@ -1,35 +1,6 @@
 #ifndef LIST_H
 #define LIST_H
 
-typedef struct Date{
-	
-	int day;
-	int month;
-	int year;
-}Date;
-
-typedef struct Record{
-
-	char* citizenID;
-	char* firstName;
-	char* lastName;
-	char* country;
-	int age;
-	char* virusName;
-	Date* dateVaccinated;
-	
-}Record;
-
-typedef struct Citizen{
-	
-	char* citizenID;
-	char* firstName;
-	char* lastName;
-	char* country;
-	int age;
-	
-}Citizen;
-
 typedef struct List{
 	
 	int num;

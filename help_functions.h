@@ -1,7 +1,7 @@
 #ifndef HELP_FUNCTIONS_H
 #define HELP_FUNCTIONS_H
 
-#include "Record.h"
+#include "record.h"
 
 FILE* read_arguments(int argc, char** argv, int* bloomSize);
 void create_temp_node(char* line, char* token, Record* temp);

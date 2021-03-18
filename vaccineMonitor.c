@@ -6,7 +6,7 @@
 #include "list.h"
 #include "hashtable.h"
 #include "BF.h"
-#include "Record.h"
+#include "record.h"
 
 #define K 16   // K for Hash Functions
 #define MAXLEVEL 4  // Skip List Level

@@ -6,5 +6,8 @@ typedef struct Date {
     int month;
     int year;
 } Date;
+
+int date_compare(Date* d1, Date* d2);
+
 #endif /* DATE_H */
 

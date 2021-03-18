@@ -1,14 +1,14 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
-#include "list.h"
+#include "skiplist.h"
 #include "BF.h"
 
 typedef struct HashtableNode {
     char* virusName;
     BF* bloom;
-    List* vaccinated_persons;
-    List* not_vaccinated_persons;
+    SkipList* vaccinated_persons;
+    SkipList* not_vaccinated_persons;
     struct HashtableNode* next; //pointer to next bucket node
 } HashtableNode;
 

@@ -48,8 +48,10 @@ int main(int argc, char** argv) {
         if (hash_search(ht_viruses, temp.virusName) == NULL) {
             hashNode = hash_insert(ht_viruses, temp.virusName);
             hashNode->bloom = bloom_init(bloomSize);
-            // hashNode->vaccinated_persons = skiplist_init(maxLevel);
-            // hashNode->not_vaccinated_persons = skiplist_init(maxLevel);
+            hashNode->vaccinated_persons = skiplist_init(MAXLEVEL);
+            //skiplist_insert();
+            hashNode->not_vaccinated_persons = skiplist_init(MAXLEVEL);
+            //skiplist_insert();
         }
         bloom_filter(hashNode->bloom, temp.virusName, K);
 
@@ -65,6 +67,9 @@ int main(int argc, char** argv) {
 
     fclose(citizenRecordsFile);
 
+    // for(i = 0; i < HASHTABLE_NODES; i++){
+
+    // }
     hash_destroy(ht_viruses);
     hash_destroy(ht_citizens);
     hash_destroy(ht_countries);

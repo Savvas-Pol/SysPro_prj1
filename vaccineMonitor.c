@@ -7,14 +7,14 @@
 #include "hashtable.h"
 #include "BF.h"
 #include "record.h"
+#include "commands.h"
 
-#define K 16   // K for Hash Functions
 #define MAXLEVEL 4  // Skip List Level
 #define HASHTABLE_NODES 100
 
 int main(int argc, char** argv) {
 
-    /*	---		DECLARATIONS	---	*/
+    /*  ---     DECLARATIONS    --- */
 
     int i, j, bloomSize, pos;
     char* token, *token2;
@@ -23,17 +23,11 @@ int main(int argc, char** argv) {
     size_t len = 0;
     ssize_t read;
 
-    Record temp;
-    HashtableNode* hashNode;
-
-    List* l = NULL;
-    BF* bloom;
-
     FILE* citizenRecordsFile;
 
-    /*		---------------		*/
+    /*      ---------------     */
 
-    if((citizenRecordsFile = read_arguments(argc, argv, &bloomSize)) == NULL){
+    if ((citizenRecordsFile = read_arguments(argc, argv, &bloomSize)) == NULL) {
         return -1;
     }
 
@@ -42,40 +36,65 @@ int main(int argc, char** argv) {
     Hashtable* ht_countries = hash_create(HASHTABLE_NODES);
 
     while ((read = getline(&line, &len, citizenRecordsFile)) != -1) { //line by line
+        Record record;
+
+        fill_record(line, &record);
         
-        create_temp_node(line, token, &temp);
+        insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, record);
 
-        if (hash_search(ht_viruses, temp.virusName) == NULL) {
-            hashNode = hash_insert(ht_viruses, temp.virusName);
-            hashNode->bloom = bloom_init(bloomSize);
-            hashNode->vaccinated_persons = skiplist_init(MAXLEVEL);
-            //skiplist_insert();
-            hashNode->not_vaccinated_persons = skiplist_init(MAXLEVEL);
-            //skiplist_insert();
-        }
-        bloom_filter(hashNode->bloom, temp.virusName, K);
 
-        free_temp_node(&temp);
+        free_record(&record);
 
     }
 
-    //waiting input from user
-    char* command = (char*)malloc(50*sizeof(char));
-    while(1){
-        printf("\nGive command...\n");
-        scanf("%[^\n]s", command);
+    while (1) {
+        printf("\nGive command: ");
+        
+        getline(&line, &len, stdin);
 
-        token = strtok(command, " \n");
+        token = strtok(line, " \n");
 
-        while(token != NULL){
-
-            if(!strcmp(token, "/exit")){
-                //frees
-                return 0;
+        if (token != NULL) {
+            if (!strcmp(token, "/exit") || !strcmp(token, "exit")) {
+                break;
             }
-            token = strtok(NULL, " \n");
+            
+            if (!strcmp(token, "/vaccineStatusBloom") || !strcmp(token, "vaccineStatusBloom")) {
+                char * tokens[3];
+                
+                tokens[0] = strtok(NULL, " \n");
+                tokens[1] = strtok(NULL, " \n");
+                tokens[2] = strtok(NULL, " \n");
+                
+                if (tokens[0] == NULL || tokens[1] == NULL || tokens[2] != NULL) {
+                    printf("syntax error\n");
+                } else {
+                    vaccine_status_bloom(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1]);
+                }
+            }
+            
+            if (!strcmp(token, "/vaccineStatus") || !strcmp(token, "vaccineStatus")) {
+                char * tokens[3];
+                
+                tokens[0] = strtok(NULL, " \n");
+                tokens[1] = strtok(NULL, " \n");
+                tokens[2] = strtok(NULL, " \n");
+                
+                if (tokens[0] == NULL) { // none => error
+                    printf("syntax error\n");
+                } else if(tokens[0] != NULL && tokens[1] == NULL) { // 1 argument -> id
+                    vaccine_status_id(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0]);
+                } else if(tokens[0] != NULL && tokens[1] != NULL && tokens[2] == NULL) { // 2 arguments -> id , virusName
+                    vaccine_status_id_virus(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1]);
+                } else { // more than 2
+                    printf("syntax error\n");
+                }
+            }
         }
     }
+    
+    
+    // frees
 
     if (line != NULL) {
         free(line);
@@ -83,9 +102,6 @@ int main(int argc, char** argv) {
 
     fclose(citizenRecordsFile);
 
-    // for(i = 0; i < HASHTABLE_NODES; i++){
-
-    // }
     hash_destroy(ht_viruses);
     hash_destroy(ht_citizens);
     hash_destroy(ht_countries);

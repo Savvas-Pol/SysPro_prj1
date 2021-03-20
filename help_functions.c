@@ -4,13 +4,12 @@
 
 #include "help_functions.h"
 
-FILE* read_arguments(int argc, char** argv, int* bloomSize){
+FILE* read_arguments(int argc, char** argv, int* bloomSize) {
+    int i;
 
-	int i;
+    FILE* citizenRecordsFile;
 
-	FILE* citizenRecordsFile;
-
-	if (argc < 5) {
+    if (argc < 5) {
         printf("Wrong arguments!!!\n");
         return NULL;
     } else {
@@ -28,11 +27,11 @@ FILE* read_arguments(int argc, char** argv, int* bloomSize){
     return citizenRecordsFile;
 }
 
-void create_temp_node(char* line, char* token, Record* temp){
+void fill_record(char* line, Record* temp) {
+    int i = 0, j;
 
-	int i = 0, j;
-
-	token = strtok(line, " \n"); //word by word
+    char* token;
+    token = strtok(line, " \n"); //word by word
 
     while (token != NULL) {
         if (i == 0) {
@@ -81,13 +80,13 @@ void create_temp_node(char* line, char* token, Record* temp){
     }
 }
 
-void free_temp_node(Record* temp){
-	free(temp->citizenID);
+void free_record(Record* temp) {
+    free(temp->citizenID);
     free(temp->country);
     free(temp->firstName);
     free(temp->lastName);
     free(temp->virusName);
-    
+
     if (temp->dateVaccinated != NULL) {
         free(temp->dateVaccinated);
     }

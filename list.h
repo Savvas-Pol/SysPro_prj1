@@ -1,12 +1,11 @@
 #ifndef LIST_H
 #define LIST_H
 
-typedef struct List{
-	
-	int num;
-	struct List *next;
+typedef struct List {
+    int num;
+    struct List *next;
 
-}List;
+} List;
 
 
 List* list_search(List* l, int num);

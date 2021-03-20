@@ -4,29 +4,27 @@
 #include "citizen.h"
 #include "date.h"
 
-typedef struct SL_Node {
+#define SKIP_LIST_MAX_LEVEL 23
 
-    int level;
-    // Citizen* id;
-    // Date* date;
-    
-    struct SL_Node **next;
+typedef struct SkipListNode {
+    Citizen* citizen;
+    Date* date;
 
-} SL_Node;
-
+    struct SkipListNode **next;
+} SkipListNode;
 
 typedef struct SkipList {
-    
-    struct SL_Node * head;
+    struct SkipListNode * head;
+    struct SkipListNode * tail;
     int maxLevel;
-
 } SkipList;
 
 SkipList* skiplist_init(int maxLevel);
-void skiplist_destroy();
+void skiplist_destroy(SkipList* sl);
 
-SL_Node* skiplist_search();
-void skiplist_insert();
+SkipListNode* skiplist_search(SkipList* sl, char * id);
+void skiplist_insert(SkipList* sl, Citizen * citizen, Date * date);
+void skiplist_delete(SkipList* sl, char * id);
 
 #endif /* SKIPLIST_H */
 

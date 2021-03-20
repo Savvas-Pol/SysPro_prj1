@@ -3,12 +3,15 @@
 
 #include "BF.h"
 
+
+
 unsigned long djb2(unsigned char *str) {
     int c;
     unsigned long hash = 5381;
 
-    while ((c = *str++))
+    while ((c = *str++) != '\0') {
         hash = ((hash << 5) + hash) + c; // hash * 33 + c
+    }
 
     return hash;
 }
@@ -17,8 +20,9 @@ unsigned long sdbm(unsigned char *str) {
     int c;
     unsigned long hash = 0;
 
-    while ((c = *str++))
+    while ((c = *str++) != '\0') {
         hash = c + (hash << 6) + (hash << 16) - hash;
+    }
 
     return hash;
 }
@@ -52,17 +56,39 @@ void bloom_destroy(BF * b) {
     free(b);
 }
 
-void bloom_filter(BF* b, char* str, int K) {
-
+void bloom_filter_insert(BF* b, char* str, int K) {
     int pos, index, offset;
     char mask;
+    int bits = 8*b->size;
 
     for (int i = 0; i < K; i++) {
-        pos = hash_i((unsigned char*)str, i);
+        pos = hash_i((unsigned char*)str, i) % bits;
         index = pos / 8;
         offset = pos % 8;
         mask = 1 << offset;
-        // b->vector[index] = b->vector[index] || mask;
+        b->vector[index] = b->vector[index] | mask;
     }
 
+}
+
+
+int bloom_filter_check(BF* b, char* str, int K) {
+    int pos, index, offset;
+    char mask;
+    int bits = 8*b->size;
+    int res;
+
+    for (int i = 0; i < K; i++) {
+        pos = hash_i((unsigned char*)str, i) % bits;
+        index = pos / 8;
+        offset = pos % 8;
+        mask = 1 << offset;
+        res = b->vector[index] & mask;
+        
+        if (res == 0) {
+            return 0; // NO
+        }
+    }
+    
+    return 1; // MAYBE
 }

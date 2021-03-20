@@ -4,7 +4,7 @@
 #include "record.h"
 
 FILE* read_arguments(int argc, char** argv, int* bloomSize);
-void create_temp_node(char* line, char* token, Record* temp);
-void free_temp_node(Record* temp);
+void fill_record(char* line, Record* temp);
+void free_record(Record* temp);
 
 #endif

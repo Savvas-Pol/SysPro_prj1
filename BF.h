@@ -17,7 +17,9 @@ BF* bloom_init(int n);
 
 void bloom_destroy(BF* b);
 
-void bloom_filter(BF* b, char* str, int K);
+void bloom_filter_insert(BF* b, char* str, int K);
+
+int bloom_filter_check(BF* b, char* str, int K);
 
 
 

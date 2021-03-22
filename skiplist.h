@@ -23,7 +23,7 @@ SkipList* skiplist_init(int maxLevel);
 void skiplist_destroy(SkipList* sl);
 
 SkipListNode* skiplist_search(SkipList* sl, char * id);
-void skiplist_insert(SkipList* sl, Citizen * citizen, Date * date);
+void skiplist_insert(SkipList* sl, Citizen * citizen, Date * date, char * id);
 void skiplist_delete(SkipList* sl, char * id);
 
 #endif /* SKIPLIST_H */

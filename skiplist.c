@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "skiplist.h"
 
@@ -56,8 +57,7 @@ SkipListNode* skiplist_search(SkipList* sl, char * id) {
     SkipListNode * l = sl->head;
 
     for (i=SKIP_LIST_MAX_LEVEL-1;i>=0;i--) {
-        while (l->next[i] != sl->tail && 
-                strcmp(l->next[i]->citizen->citizenID, id) < 0) {
+        while (l->next[i] != sl->tail && strcmp(l->next[i]->citizen->citizenID, id) < 0) {
             l=l->next[i];
         }
     }
@@ -73,10 +73,56 @@ SkipListNode* skiplist_search(SkipList* sl, char * id) {
     return 0;
 }
 
-void skiplist_insert(SkipList* sl, Citizen * citizen, Date * date) {
+void skiplist_insert(SkipList* sl, Citizen * citizen, Date * date, char * id) {
 
+	int i, level;
+	SkipListNode* update[sl->maxLevel];
+	SkipListNode * l = sl->head;
+
+	srand(time(0));
+
+	for (i=SKIP_LIST_MAX_LEVEL-1;i>=0;i--) {
+        while (l->next[i] != sl->tail && strcmp(l->next[i]->citizen->citizenID, id) < 0) {
+            l=l->next[i];
+        }
+        update[i] = l;
+    }
+    l=l->next[0];
+    if (strcmp(l->citizen->citizenID,id) == 0) {
+    	l->citizen = citizen;
+    	l->date = date;
+    } else {
+    	level = rand()%SKIP_LIST_MAX_LEVEL;
+    	l = skiplist_create_node(citizen, date, sl->maxLevel);
+    	for(i = 0; i < level; i++) {
+    		l->next[i] = update[i]->next[i];
+    		update[i]->next[i] = l;
+    	}
+    }
 }
 
 void skiplist_delete(SkipList* sl, char * id) {
 
+	int i, level;
+	SkipListNode* update[sl->maxLevel];
+	SkipListNode * l = sl->head;
+
+	srand(time(0));
+
+	for (i=SKIP_LIST_MAX_LEVEL-1;i>=0;i--) {
+        while (l->next[i] != sl->tail && strcmp(l->next[i]->citizen->citizenID, id) < 0) {
+            l=l->next[i];
+        }
+        update[i] = l;
+    }
+    l=l->next[0];
+    if (strcmp(l->citizen->citizenID,id) == 0) {
+    	for( i = 0; i < SKIP_LIST_MAX_LEVEL-1; i++) {
+    		if(update[i]->next[i] != l) {
+    			break;
+    		}
+    		update[i]->next[i] = l->next[i];
+    	}
+    	free(l);
+    }
 }

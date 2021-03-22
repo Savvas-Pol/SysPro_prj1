@@ -53,9 +53,6 @@ int main(int argc, char** argv) {
         token = strtok(line, " \n");
 
         if (token != NULL) {
-            if (!strcmp(token, "/exit") || !strcmp(token, "exit")) {
-                break;
-            }
             
             if (!strcmp(token, "/vaccineStatusBloom") || !strcmp(token, "vaccineStatusBloom")) {
                 char * tokens[3];
@@ -89,6 +86,69 @@ int main(int argc, char** argv) {
                 }
             }
 
+            if (!strcmp(token, "/populationStatus") || !strcmp(token, "populationStatus")) {
+                char * tokens[5];
+                
+                tokens[0] = strtok(NULL, " \n");
+                tokens[1] = strtok(NULL, " \n");
+                tokens[2] = strtok(NULL, " \n");
+                tokens[3] = strtok(NULL, " \n");
+                tokens[4] = strtok(NULL, " \n");
+                
+                if (tokens[0] == NULL) {
+                    printf("syntax error\n");
+                } else if(tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] == NULL) {
+                    population_status(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2]);
+                } else if(tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] == NULL) {
+                    population_status_country(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3]);
+                } else { // more than 2
+                    printf("syntax error\n");
+                }
+            }
+
+            if (!strcmp(token, "/popStatusByAge") || !strcmp(token, "popStatusByAge")) {
+                char * tokens[5];
+                
+                tokens[0] = strtok(NULL, " \n");
+                tokens[1] = strtok(NULL, " \n");
+                tokens[2] = strtok(NULL, " \n");
+                tokens[3] = strtok(NULL, " \n");
+                tokens[4] = strtok(NULL, " \n");
+                
+                if (tokens[0] == NULL) {
+                    printf("syntax error\n");
+                } else if(tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] == NULL) {
+                    pop_status_by_age(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2]);
+                } else if(tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] == NULL) {
+                    pop_status_by_age_country(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3]);
+                } else { // more than 2
+                    printf("syntax error\n");
+                }
+            }
+
+            if (!strcmp(token, "/insertCitizenRecord") || !strcmp(token, "insertCitizenRecord")) {
+                // char * tokens[9];
+                // Record record;
+                
+                // tokens[0] = strtok(NULL, " \n");
+                // tokens[1] = strtok(NULL, " \n");
+                // tokens[2] = strtok(NULL, " \n");
+                // tokens[3] = strtok(NULL, " \n");
+                // tokens[4] = strtok(NULL, " \n");
+                // tokens[5] = strtok(NULL, " \n");
+                // tokens[6] = strtok(NULL, " \n");
+                // tokens[7] = strtok(NULL, " \n");
+                // tokens[8] = strtok(NULL, " \n");
+
+                // if (tokens[0] == NULL) {
+                //     printf("syntax error\n");
+                // } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] != NULL && tokens[5] != NULL && tokens[6] != NULL && tokens[7] == NULL) {
+                //     insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
+                // } else {
+                //     vaccinate_now(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
+                // }
+            }
+
             if (!strcmp(token, "/vaccinateNow") || !strcmp(token, "vaccinateNow")) {
                 char * tokens[7];
                 
@@ -105,6 +165,23 @@ int main(int argc, char** argv) {
                 } else {
                     vaccinate_now(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
                 }
+            }
+
+            if (!strcmp(token, "/list-nonVaccinated-Persons") || !strcmp(token, "list-nonVaccinated-Persons")) {
+                char * tokens[2];
+                
+                tokens[0] = strtok(NULL, " \n");
+                tokens[1] = strtok(NULL, " \n");
+
+                if (tokens[0] == NULL || tokens[1] != NULL) {
+                    printf("syntax error\n");
+                } else {
+                    list_nonVaccinated_Persons(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0]);
+                }
+            }
+
+            if (!strcmp(token, "/exit") || !strcmp(token, "exit")) {
+                break;
             }
         }
     }

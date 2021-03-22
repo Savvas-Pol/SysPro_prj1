@@ -35,6 +35,26 @@ void vaccine_status_id(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens
     printf("CALLED vaccine_status: %s\n", citizenID);
 }
 
+void population_status(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName, char* date1, char* date2) {
+	printf("CALLED population_status: %s %s %s\n", virusName, date1, date2);
+}
+
+void population_status_country(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* country, char* virusName, char* date1, char* date2) {
+	printf("CALLED population_status: %s %s %s %s\n", country, virusName, date1, date2);
+}
+
+void pop_status_by_age(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName, char* date1, char* date2) {
+	printf("CALLED pop_status_by_age: %s %s %s\n", virusName, date1, date2);
+}
+
+void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* country, char* virusName, char* date1, char* date2) {
+	printf("CALLED pop_status_by_age_country: %s %s %s %s\n", country, virusName, date1, date2);
+}
+
 void vaccinate_now(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char * citizenID, char * firstName, char * lastName, char * country, char * age, char * virusName) {
 	printf("CALLED vaccinate_now: %s %s %s %s %s %s\n", citizenID, firstName, lastName, country, age, virusName);
+}
+
+void list_nonVaccinated_Persons(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName) {
+	printf("CALLED list_nonVaccinated_Persons: %s\n", virusName);
 }

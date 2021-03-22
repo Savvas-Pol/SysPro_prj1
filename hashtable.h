@@ -32,6 +32,10 @@ typedef struct HashtableCitizen {
 typedef struct HashtableCountryNode {
     char* countryName;
     int population;
+    // int population_0_20;
+    // int population_20_40;
+    // int population_40_60;
+    // int population_60plus;
     struct HashtableCountryNode* next; //pointer to next bucket node
 } HashtableCountryNode;
 

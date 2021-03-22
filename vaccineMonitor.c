@@ -31,9 +31,9 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    Hashtable* ht_viruses = hash_create(HASHTABLE_NODES);
-    Hashtable* ht_citizens = hash_create(HASHTABLE_NODES);
-    Hashtable* ht_countries = hash_create(HASHTABLE_NODES);
+    HashtableVirus* ht_viruses = hash_virus_create(HASHTABLE_NODES);
+    HashtableCitizen* ht_citizens = hash_citizen_create(HASHTABLE_NODES);
+    HashtableCountry* ht_countries = hash_country_create(HASHTABLE_NODES);
 
     while ((read = getline(&line, &len, citizenRecordsFile)) != -1) { //line by line
         Record record;
@@ -42,9 +42,7 @@ int main(int argc, char** argv) {
         
         insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, record);
 
-
         free_record(&record);
-
     }
 
     while (1) {
@@ -90,6 +88,24 @@ int main(int argc, char** argv) {
                     printf("syntax error\n");
                 }
             }
+
+            if (!strcmp(token, "/vaccinateNow") || !strcmp(token, "vaccinateNow")) {
+                char * tokens[7];
+                
+                tokens[0] = strtok(NULL, " \n");
+                tokens[1] = strtok(NULL, " \n");
+                tokens[2] = strtok(NULL, " \n");
+                tokens[3] = strtok(NULL, " \n");
+                tokens[4] = strtok(NULL, " \n");
+                tokens[5] = strtok(NULL, " \n");
+                tokens[6] = strtok(NULL, " \n");
+
+                if (tokens[0] == NULL || tokens[1] == NULL || tokens[2] == NULL || tokens[3] == NULL || tokens[4] == NULL || tokens[5] == NULL || tokens[6] != NULL) {
+                    printf("syntax error\n");
+                } else {
+                    vaccinate_now(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
+                }
+            }
         }
     }
     
@@ -102,9 +118,9 @@ int main(int argc, char** argv) {
 
     fclose(citizenRecordsFile);
 
-    hash_destroy(ht_viruses);
-    hash_destroy(ht_citizens);
-    hash_destroy(ht_countries);
+    hash_virus_destroy(ht_viruses);
+    hash_citizen_destroy(ht_citizens);
+    hash_country_destroy(ht_countries);
 
     return 0;
 }

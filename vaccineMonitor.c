@@ -186,7 +186,6 @@ int main(int argc, char** argv) {
         }
     }
     
-    
     // frees
 
     if (line != NULL) {

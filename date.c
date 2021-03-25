@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <time.h>
+#include <stdlib.h>
 
 #include "date.h"
 
@@ -32,4 +33,18 @@ void get_current_date_time() {
 	struct tm tm = *localtime(&t);
 
 	printf("now: %02d-%02d-%d %02d:%02d:%02d\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
+}
+
+Date * duplicateDate(Date *d) {
+    if (d == NULL) {
+        return NULL;
+    }
+    
+    Date * copy = calloc(1, sizeof(Date));
+    
+    copy->day = d->day;
+    copy->month = d->month;
+    copy->year = d->year;
+    
+    return copy;
 }

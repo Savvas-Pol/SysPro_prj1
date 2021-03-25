@@ -42,6 +42,9 @@ void hash_virus_destroy(HashtableVirus* ht) {
             ht->nodes[i] = temp->next;
 
             bloom_destroy(temp->bloom);
+            skiplist_destroy(temp->vaccinated_persons);
+            skiplist_destroy(temp->not_vaccinated_persons);
+            
             free(temp->virusName);
             free(temp);
             
@@ -68,12 +71,11 @@ HashtableVirusNode* hash_virus_search(HashtableVirus* ht, char* virusName) {
     return temp;
 }
 
-HashtableVirusNode* hash__virus_insert(HashtableVirus* ht, char* virusName) {
+HashtableVirusNode* hash_virus_insert(HashtableVirus* ht, char* virusName) {
 
     int pos = hash_function((unsigned char*) virusName, ht->hash_nodes);
 
     HashtableVirusNode* new;
-    HashtableVirusNode* temp = ht->nodes[pos];
 
     new = (HashtableVirusNode*) malloc(sizeof (HashtableVirusNode));
 
@@ -134,9 +136,7 @@ void hash_citizen_destroy(HashtableCitizen* ht) {
         while (temp != NULL) {
             ht->nodes[i] = temp->next;
 
-            free(temp->citizenID);
-            free(temp->firstName);
-            free(temp->lastName);
+            citizen_destroy(temp->citizen);
             free(temp);
             
             temp = ht->nodes[i];
@@ -147,43 +147,58 @@ void hash_citizen_destroy(HashtableCitizen* ht) {
     free(ht);
 }
 
-HashtableCitizenNode* hash_citizen_search(HashtableCitizen* ht, char* citizenID, char* firstName, char* lastName) {
+HashtableCitizenNode* hash_citizen_search(HashtableCitizen* ht, char* citizenID) {
 
     int pos = hash_function((unsigned char*) citizenID, ht->hash_nodes);
 
     HashtableCitizenNode* temp = ht->nodes[pos];
 
     while (temp != NULL) {
-        if (!(strcmp(temp->citizenID, citizenID)) && !(strcmp(temp->firstName, firstName)) && !(strcmp(temp->lastName, lastName)))
+        if (!(strcmp(temp->citizen->citizenID, citizenID)) ) {
             return temp;
+        }
 
         temp = temp->next;
     }
     return temp;
 }
 
-HashtableCitizenNode* hash__citizen_insert(HashtableCitizen* ht, char* citizenID, char* firstName, char* lastName) {
+HashtableCitizenNode* hash_citizen_search_for_all_fields(HashtableCitizen* ht, Citizen *citizen) {
+    int pos = hash_function((unsigned char*) citizen->citizenID, ht->hash_nodes);
 
-    int pos = hash_function((unsigned char*) citizenID, ht->hash_nodes);
+    HashtableCitizenNode* temp = ht->nodes[pos];
+
+    while (temp != NULL) {
+        if (!(strcmp(temp->citizen->citizenID, citizen->citizenID)) &&
+                !(strcmp(temp->citizen->firstName, citizen->firstName)) &&
+                !(strcmp(temp->citizen->lastName, citizen->lastName)) &&
+                !(strcmp(temp->citizen->country, citizen->country)) &&
+                (temp->citizen->age == citizen->age)) {
+            return temp;
+        }
+
+        temp = temp->next;
+    }
+    return temp;
+}
+
+HashtableCitizenNode* hash_citizen_insert(HashtableCitizen* ht, Citizen *citizen) {
+
+    int pos = hash_function((unsigned char*) citizen->citizenID, ht->hash_nodes);
 
     HashtableCitizenNode* new;
-    HashtableCitizenNode* temp = ht->nodes[pos];
 
     new = (HashtableCitizenNode*) malloc(sizeof (HashtableCitizenNode));
 
-    new->citizenID = (char*) malloc(strlen(citizenID) + 1);
-    strcpy(new->citizenID, citizenID);
-    new->firstName = (char*) malloc(strlen(firstName) + 1);
-    strcpy(new->firstName, firstName);
-    new->lastName = (char*) malloc(strlen(lastName) + 1);
-    strcpy(new->lastName, lastName);
+    new->citizen = citizen;
+    
     new->next = ht->nodes[pos];
     ht->nodes[pos] = new;
 
     return new;
 }
 
-void hash_citizen_delete(HashtableCitizen* ht, char* citizenID, char* firstName, char* lastName) {
+void hash_citizen_delete(HashtableCitizen* ht, char* citizenID) {
 
     int pos = hash_function((unsigned char*) citizenID, ht->hash_nodes);
 
@@ -191,15 +206,13 @@ void hash_citizen_delete(HashtableCitizen* ht, char* citizenID, char* firstName,
     int first = 1; // flag to check if we are in first node
 
     while (temp != NULL) {
-        if (!(strcmp(temp->citizenID, citizenID)) && !(strcmp(temp->firstName, firstName)) && !(strcmp(temp->lastName, lastName))) {
+        if (!(strcmp(temp->citizen->citizenID, citizenID))) {
             if (first)
                 ht->nodes[pos] = temp->next;
             else
                 temp2->next = temp->next;
 
-            free(temp->citizenID);
-            free(temp->firstName);
-            free(temp->lastName);
+            free(temp->citizen);
             free(temp);
             return;
         }
@@ -265,7 +278,6 @@ HashtableCountryNode* hash_country_insert(HashtableCountry* ht, char* countryNam
     int pos = hash_function((unsigned char*) countryName, ht->hash_nodes);
 
     HashtableCountryNode* new;
-    HashtableCountryNode* temp = ht->nodes[pos];
 
     new = (HashtableCountryNode*) malloc(sizeof (HashtableCountryNode));
 

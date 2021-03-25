@@ -3,6 +3,7 @@
 
 #include "skiplist.h"
 #include "BF.h"
+#include "citizen.h"
 
 typedef struct HashtableVirusNode {
     char* virusName;
@@ -18,9 +19,7 @@ typedef struct HashtableVirus {
 } HashtableVirus;
 
 typedef struct HashtableCitizenNode {
-    char* citizenID;
-    char* firstName;
-    char* lastName;
+    Citizen * citizen;
     struct HashtableCitizenNode* next; //pointer to next bucket node
 } HashtableCitizenNode;
 
@@ -49,14 +48,15 @@ int hash_function(unsigned char *str, int buckets);
 HashtableVirus* hash_virus_create(int hashNodes);
 void hash_virus_destroy(HashtableVirus* ht);
 HashtableVirusNode* hash_virus_search(HashtableVirus* ht, char* virusName);
-HashtableVirusNode* hash__virus_insert(HashtableVirus* ht, char* virusName);
+HashtableVirusNode* hash_virus_insert(HashtableVirus* ht, char* virusName);
 void hash_virus_delete(HashtableVirus* ht, char* virusName);
 
 HashtableCitizen* hash_citizen_create(int hashNodes);
 void hash_citizen_destroy(HashtableCitizen* ht);
-HashtableCitizenNode* hash_citizen_search(HashtableCitizen* ht, char* citizenID, char* firstName, char* lastName);
-HashtableCitizenNode* hash__citizen_insert(HashtableCitizen* ht, char* citizenID, char* firstName, char* lastName);
-void hash_citizen_delete(HashtableCitizen* ht, char* citizenID, char* firstName, char* lastName);
+HashtableCitizenNode* hash_citizen_search(HashtableCitizen* ht, char* citizenID);
+HashtableCitizenNode* hash_citizen_search_for_all_fields(HashtableCitizen* ht, Citizen *citizen);
+HashtableCitizenNode* hash_citizen_insert(HashtableCitizen* ht, Citizen *citizen);
+void hash_citizen_delete(HashtableCitizen* ht, char* citizenID);
 
 HashtableCountry* hash_country_create(int hashNodes);
 void hash_country_destroy(HashtableCountry* ht);

@@ -9,9 +9,7 @@
 #include "BF.h"
 #include "record.h"
 #include "commands.h"
-
-#define MAXLEVEL 4  // Skip List Level
-#define HASHTABLE_NODES 100
+#include "constants.h"
 
 int main(int argc, char** argv) {
     srand(time(0));
@@ -33,21 +31,21 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    HashtableVirus* ht_viruses = hash_virus_create(HASHTABLE_NODES);
-    HashtableCitizen* ht_citizens = hash_citizen_create(HASHTABLE_NODES);
-    HashtableCountry* ht_countries = hash_country_create(HASHTABLE_NODES);
+    HashtableVirus* ht_viruses = hash_virus_create(HASHTABLE_NODES);        //create HashTable for viruses
+    HashtableCitizen* ht_citizens = hash_citizen_create(HASHTABLE_NODES);   //create HashTable for citizens
+    HashtableCountry* ht_countries = hash_country_create(HASHTABLE_NODES);  //create HashTable for countries
 
-    while ((read = getline(&line, &len, citizenRecordsFile)) != -1) { //line by line
+    while ((read = getline(&line, &len, citizenRecordsFile)) != -1) {       //read file line by line
         Record record;
 
-        fill_record(line, &record);
+        fill_record(line, &record);             //create a temp record
 
         insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, record);
 
-        free_record(&record);
+        free_record(&record);                   //free temp record
     }
 
-    while (1) {
+    while (1) {                     //commands from user
         printf("\nGive command: ");
 
         getline(&line, &len, stdin);

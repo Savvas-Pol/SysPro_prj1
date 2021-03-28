@@ -1,4 +1,3 @@
-
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
@@ -145,7 +144,7 @@ void vaccine_status_bloom(HashtableVirus* ht_viruses, HashtableCitizen* ht_citiz
         int q = bloom_filter_check(virusNode->bloom, citizenID, HASH_FUNCTIONS_K);
         
         if (q == 0) {
-            printf("NO \n");
+            printf("NOT VACCINATED \n");
         } else {
             printf("MAYBE \n");
         }
@@ -165,9 +164,9 @@ void vaccine_status_id_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
         bool vaccinated = sn1 != NULL;
         
         if (vaccinated) {
-            printf("Vaccinated at: %d/%d/%d \n", sn1->date->day, sn1->date->month, sn1->date->year);
+            printf("VACCINATED ON %d-%d-%d \n", sn1->date->day, sn1->date->month, sn1->date->year);
         } else {
-            printf("Not vaccinated \n");
+            printf("NOT VACCINATED \n");
         }
         
     } else {
@@ -201,4 +200,18 @@ void vaccinate_now(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, Ha
 
 void list_nonVaccinated_Persons(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName) {
     printf("CALLED list_nonVaccinated_Persons: %s\n", virusName);
+
+    HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
+
+    if (virusNode != NULL) {
+    	SkipListNode* temp = virusNode->not_vaccinated_persons->head->next[0];
+
+    	while(temp != NULL) {
+    		if(strcmp(temp->citizen->citizenID, "ZZZZZ") != 0)		//don't print skip list tail node
+    			printf("%s %s %s %s %d\n", temp->citizen->citizenID, temp->citizen->firstName, temp->citizen->lastName, temp->citizen->country, temp->citizen->age);
+    		temp = temp->next[0];
+    	}
+    } else {
+        printf("virus missing: %s \n", virusName);
+    }
 }

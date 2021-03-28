@@ -3,8 +3,6 @@
 
 #include "BF.h"
 
-
-
 unsigned long djb2(unsigned char *str) {
     int c;
     unsigned long hash = 5381;

@@ -3,8 +3,7 @@
 
 #include "citizen.h"
 #include "date.h"
-
-#define SKIP_LIST_MAX_LEVEL 23
+#include "constants.h"
 
 typedef struct SkipListNode {
     Citizen* citizen;

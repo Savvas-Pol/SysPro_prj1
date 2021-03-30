@@ -177,6 +177,27 @@ void vaccine_status_id_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
 
 void vaccine_status_id(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char * citizenID) {
     printf("CALLED vaccine_status: %s\n", citizenID);
+
+    int i;
+    HashtableVirusNode* temp;
+    SkipListNode* citizen;
+
+    for(i = 0; i < HASHTABLE_NODES; i++) {
+
+        temp = ht_viruses->nodes[i];
+        while(temp != NULL) {
+            citizen = skiplist_search(temp->vaccinated_persons, citizenID);
+            if(citizen != NULL) {
+                printf("%s YES %d-%d-%d \n", temp->virusName, citizen->date->day, citizen->date->month, citizen->date->year);
+            }
+
+            citizen = skiplist_search(temp->not_vaccinated_persons, citizenID);
+            if(citizen != NULL) {
+                printf("%s NO \n", temp->virusName);
+            }
+            temp = temp->next;
+        }
+    }
 }
 
 void population_status(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName, char* date1, char* date2) {

@@ -27,12 +27,18 @@ int date_compare(Date* d1, Date* d2) { //returns -1 if d1<d2, 1 if d1>d2, 0 othe
     }
 }
 
-void get_current_date_time() {
+Date* get_current_date() {
 
+    Date* today = (Date *) calloc(1, sizeof (Date));
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
 
-	printf("now: %02d-%02d-%d %02d:%02d:%02d\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
+    today->day = tm.tm_mday;
+    today->month = tm.tm_mon + 1;
+    today->year = tm.tm_year + 1900;
+
+    return today;
+	// printf("now: %02d-%02d-%d %02d:%02d:%02d\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
 Date * duplicateDate(Date *d) {

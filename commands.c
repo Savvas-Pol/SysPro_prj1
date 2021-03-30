@@ -6,6 +6,7 @@
 #include "commands.h"
 #include "skiplist.h"
 #include "constants.h"
+#include "date.h"
 
 bool find_conflict(Record record, Citizen* citizen) {
     if (strcmp(record.citizenID, citizen->citizenID) != 0) {
@@ -52,7 +53,7 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 
                     skiplist_delete(virusNode->not_vaccinated_persons, c->citizenID);
                     skiplist_insert(virusNode->vaccinated_persons, c, record.dateVaccinated, c->citizenID);
-                    bloom_filter_insert(virusNode->bloom, c->citizenID, bloomSize);
+                    bloom_filter_insert(virusNode->bloom, c->citizenID, HASH_FUNCTIONS_K);
                     printf("Vaccinating: %s %s %s \n", c->citizenID, c->firstName, c->lastName );
                 } else {
                     printf("Conflict on: %s %s %s \n", record.citizenID, record.firstName, record.lastName );
@@ -77,7 +78,7 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
             if (cn != NULL) {
                 if (vaccinating) {
                     skiplist_insert(virusNode->vaccinated_persons, cn->citizen, record.dateVaccinated, cn->citizen->citizenID);
-                    bloom_filter_insert(virusNode->bloom, cn->citizen->citizenID, bloomSize);
+                    bloom_filter_insert(virusNode->bloom, cn->citizen->citizenID, HASH_FUNCTIONS_K);
                 } else {
                     skiplist_insert(virusNode->not_vaccinated_persons, cn->citizen, record.dateVaccinated, cn->citizen->citizenID);
                 }
@@ -95,7 +96,7 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 
                 if (vaccinating) {
                     skiplist_insert(virusNode->vaccinated_persons, c, record.dateVaccinated, c->citizenID);
-                    bloom_filter_insert(virusNode->bloom, c->citizenID, bloomSize);
+                    bloom_filter_insert(virusNode->bloom, c->citizenID, HASH_FUNCTIONS_K);
                 } else {
                     skiplist_insert(virusNode->not_vaccinated_persons, c, record.dateVaccinated, c->citizenID);
                 }
@@ -125,7 +126,7 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 
     if (vaccinating) {
         skiplist_insert(virusNode->vaccinated_persons, c, record.dateVaccinated, c->citizenID);
-        bloom_filter_insert(virusNode->bloom, c->citizenID, bloomSize);
+        bloom_filter_insert(virusNode->bloom, c->citizenID, HASH_FUNCTIONS_K);
     } else {
         skiplist_insert(virusNode->not_vaccinated_persons, c, record.dateVaccinated, c->citizenID);
     }
@@ -196,6 +197,32 @@ void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCitizen* ht_
 
 void vaccinate_now(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char * citizenID, char * firstName, char * lastName, char * country, char * age, char * virusName) {
     printf("CALLED vaccinate_now: %s %s %s %s %s %s\n", citizenID, firstName, lastName, country, age, virusName);
+
+    int flag = 0;
+    HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
+
+    if (virusNode != NULL) {
+        SkipListNode* temp = virusNode->vaccinated_persons->head->next[0];
+
+        while(temp != NULL) {
+            if(!strcmp(citizenID, temp->citizen->citizenID)) {
+                printf("ERROR: CITIZEN %s ALREADY VACCINATED ON %d-%d-%d\n", temp->citizen->citizenID, temp->date->day, temp->date->month, temp->date->year);
+                flag = 1;
+                break;
+            }
+            temp = temp->next[0];
+        }
+        if(flag == 0) {
+            bloom_filter_insert(virusNode->bloom, citizenID, HASH_FUNCTIONS_K);
+            skiplist_delete(virusNode->not_vaccinated_persons, citizenID);
+            Citizen * c = citizen_create(citizenID, firstName, lastName, country, atoi(age));
+            Date* d = get_current_date();
+            skiplist_insert(virusNode->vaccinated_persons, c, d, citizenID);
+            printf("SUCCESS: CITIZEN %s VACCINATED\n", citizenID);
+        }
+    } else {
+        printf("virus missing: %s \n", virusName);
+    }
 }
 
 void list_nonVaccinated_Persons(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName) {
@@ -204,7 +231,7 @@ void list_nonVaccinated_Persons(HashtableVirus* ht_viruses, HashtableCitizen* ht
     HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 
     if (virusNode != NULL) {
-    	SkipListNode* temp = virusNode->not_vaccinated_persons->head->next[0];
+    	SkipListNode* temp = virusNode->not_vaccinated_persons->head->next[0];     //first node after head
 
     	while(temp != NULL) {
     		if(strcmp(temp->citizen->citizenID, "ZZZZZ") != 0)		//don't print skip list tail node

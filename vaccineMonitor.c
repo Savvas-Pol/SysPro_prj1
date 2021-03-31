@@ -5,7 +5,9 @@
 
 #include "help_functions.h"
 #include "list.h"
-#include "hashtable.h"
+#include "hashtable_virus.h"
+#include "hashtable_citizen.h"
+#include "hashtable_country.h"
 #include "BF.h"
 #include "record.h"
 #include "commands.h"

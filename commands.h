@@ -2,7 +2,9 @@
 #define COMMANDS_H
 
 #include "record.h"
-#include "hashtable.h"
+#include "hashtable_virus.h"
+#include "hashtable_citizen.h"
+#include "hashtable_country.h"
 
 
 void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, Record record);

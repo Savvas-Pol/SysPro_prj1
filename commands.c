@@ -41,14 +41,14 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
         bool vaccinated = sn1 != NULL;
         bool not_vaccinated = sn2 != NULL;
 
-        if (vaccinated || not_vaccinated) {
+        if (vaccinated || not_vaccinated) {     //if already in a skiplist
             if (vaccinating && vaccinated) {
                 printf("Error: Already vaccinated \n");
                 return;
             }
 
             if (vaccinating && !vaccinated) {
-                if (!find_conflict(record, sn2->citizen)) {
+                if (!find_conflict(record, sn2->citizen)) {         //check if given record is correct
                     Citizen * c = sn2->citizen;
 
                     skiplist_delete(virusNode->not_vaccinated_persons, c->citizenID);
@@ -202,6 +202,8 @@ void vaccine_status_id(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens
 
 void population_status(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName, char* date1, char* date2) {
     printf("CALLED population_status: %s %s %s\n", virusName, date1, date2);
+
+
 }
 
 void population_status_country(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* country, char* virusName, char* date1, char* date2) {

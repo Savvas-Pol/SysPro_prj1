@@ -18,8 +18,8 @@ int main(int argc, char** argv) {
 
     /*  ---     DECLARATIONS    --- */
 
-    int i, j, bloomSize, pos;
-    char* token, *token2;
+    int bloomSize;
+    char* token;
 
     char* line = NULL;
     size_t len = 0;
@@ -33,21 +33,21 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    HashtableVirus* ht_viruses = hash_virus_create(HASHTABLE_NODES);        //create HashTable for viruses
-    HashtableCitizen* ht_citizens = hash_citizen_create(HASHTABLE_NODES);   //create HashTable for citizens
-    HashtableCountry* ht_countries = hash_country_create(HASHTABLE_NODES);  //create HashTable for countries
+    HashtableVirus* ht_viruses = hash_virus_create(HASHTABLE_NODES); //create HashTable for viruses
+    HashtableCitizen* ht_citizens = hash_citizen_create(HASHTABLE_NODES); //create HashTable for citizens
+    HashtableCountry* ht_countries = hash_country_create(HASHTABLE_NODES); //create HashTable for countries
 
-    while ((read = getline(&line, &len, citizenRecordsFile)) != -1) {       //read file line by line
+    while ((read = getline(&line, &len, citizenRecordsFile)) != -1) { //read file line by line
         Record record;
 
-        fill_record(line, &record);             //create a temp record
+        fill_record(line, &record); //create a temp record
 
-        insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, record);
+        insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, record, 1);
 
-        free_record(&record);                   //free temp record
+        free_record(&record); //free temp record
     }
 
-    while (1) {                     //commands from user
+    while (1) { //commands from user
         printf("\nGive command: ");
 
         getline(&line, &len, stdin);
@@ -129,26 +129,76 @@ int main(int argc, char** argv) {
             }
 
             if (!strcmp(token, "/insertCitizenRecord") || !strcmp(token, "insertCitizenRecord")) {
-                // char * tokens[9];
-                // Record record;
+                char * tokens[9];
+                Record record = {0};
 
-                // tokens[0] = strtok(NULL, " \n");
-                // tokens[1] = strtok(NULL, " \n");
-                // tokens[2] = strtok(NULL, " \n");
-                // tokens[3] = strtok(NULL, " \n");
-                // tokens[4] = strtok(NULL, " \n");
-                // tokens[5] = strtok(NULL, " \n");
-                // tokens[6] = strtok(NULL, " \n");
-                // tokens[7] = strtok(NULL, " \n");
-                // tokens[8] = strtok(NULL, " \n");
+                tokens[0] = strtok(NULL, " \n"); // ID
+                tokens[1] = strtok(NULL, " \n"); // FNAME
+                tokens[2] = strtok(NULL, " \n"); // LNAME
+                tokens[3] = strtok(NULL, " \n"); // Country
+                tokens[4] = strtok(NULL, " \n"); // Age
+                tokens[5] = strtok(NULL, " \n"); // SARS
+                tokens[6] = strtok(NULL, " \n"); // YES/NO
+                tokens[7] = strtok(NULL, " \n"); // 10-10-2010/-
+                tokens[8] = strtok(NULL, " \n"); // NULL
 
-                // if (tokens[0] == NULL) {
-                //     printf("syntax error\n");
-                // } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] != NULL && tokens[5] != NULL && tokens[6] != NULL && tokens[7] == NULL) {
-                //     insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
-                // } else {
-                //     vaccinate_now(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
-                // }
+
+                if (tokens[0] == NULL || tokens[8] != NULL) {
+                    printf("syntax error\n");
+                } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] != NULL && tokens[5] != NULL && tokens[6] != NULL && tokens[7] != NULL) {
+                    // YES
+                    record.citizenID = malloc((strlen(tokens[0])) + 1);
+                    record.firstName = malloc((strlen(tokens[1])) + 1);
+                    record.lastName = malloc((strlen(tokens[2])) + 1);
+                    record.country = malloc((strlen(tokens[3])) + 1);
+                    record.virusName = malloc((strlen(tokens[5])) + 1);
+
+                    strcpy(record.citizenID, tokens[0]);
+                    strcpy(record.firstName, tokens[1]);
+                    strcpy(record.lastName, tokens[2]);
+                    strcpy(record.country, tokens[3]);
+                    record.age = atoi(tokens[4]);
+                    strcpy(record.virusName, tokens[5]);
+
+                    record.dateVaccinated = malloc(sizeof (Date));
+
+                    char * token = strtok(tokens[7], "-");
+
+                    int j = 0;
+
+                    while (token != NULL) {
+                        if (j == 0)
+                            record.dateVaccinated->day = atoi(token);
+                        else if (j == 1)
+                            record.dateVaccinated->month = atoi(token);
+                        else if (j == 2)
+                            record.dateVaccinated->year = atoi(token);
+                        token = strtok(NULL, "-\n");
+                        j++;
+                    }
+
+                    insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, record, 0);
+
+                    free_record(&record);
+                } else {
+                    record.citizenID = malloc((strlen(tokens[0])) + 1);
+                    record.firstName = malloc((strlen(tokens[1])) + 1);
+                    record.lastName = malloc((strlen(tokens[2])) + 1);
+                    record.country = malloc((strlen(tokens[3])) + 1);
+                    record.virusName = malloc((strlen(tokens[5])) + 1);
+
+                    strcpy(record.citizenID, tokens[0]);
+                    strcpy(record.firstName, tokens[1]);
+                    strcpy(record.lastName, tokens[2]);
+                    strcpy(record.country, tokens[3]);
+                    record.age = atoi(tokens[4]);
+                    strcpy(record.virusName, tokens[5]);
+                    record.dateVaccinated = NULL;
+
+                    insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, record, 0);
+
+                    free_record(&record);
+                }
             }
 
             if (!strcmp(token, "/vaccinateNow") || !strcmp(token, "vaccinateNow")) {

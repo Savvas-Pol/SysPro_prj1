@@ -127,6 +127,7 @@ void skiplist_delete(SkipList* sl, char * id) {
             }
             update[i]->next[i] = l->next[i];
         }
+        free(l->next);
         free(l);
     }
 }

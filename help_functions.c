@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "help_functions.h"
+
 
 FILE* read_arguments(int argc, char** argv, int* bloomSize) {
     int i;
@@ -78,6 +80,26 @@ void fill_record(char* line, Record* temp) {
         token = strtok(NULL, " \n");
         i++;
     }
+}
+
+bool find_conflict(Record record, Citizen* citizen) {
+    if (strcmp(record.citizenID, citizen->citizenID) != 0) {
+        return true;
+    }
+    if (strcmp(record.firstName, citizen->firstName) != 0) {
+        return true;
+    }
+    if (strcmp(record.lastName, citizen->lastName) != 0) {
+        return true;
+    }
+    if (strcmp(record.country, citizen->country) != 0) {
+        return true;
+    }
+    if (record.age != citizen->age) {
+        return true;
+    }
+
+    return false;
 }
 
 void free_record(Record* temp) {

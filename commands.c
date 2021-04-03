@@ -12,26 +12,6 @@
 #include "hashtable_country.h"
 #include "help_functions.h"
 
-bool find_conflict(Record record, Citizen* citizen) {
-    if (strcmp(record.citizenID, citizen->citizenID) != 0) {
-        return true;
-    }
-    if (strcmp(record.firstName, citizen->firstName) != 0) {
-        return true;
-    }
-    if (strcmp(record.lastName, citizen->lastName) != 0) {
-        return true;
-    }
-    if (strcmp(record.country, citizen->country) != 0) {
-        return true;
-    }
-    if (record.age != citizen->age) {
-        return true;
-    }
-
-    return false;
-}
-
 void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, Record record, int flag) {
 
     HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, record.virusName);

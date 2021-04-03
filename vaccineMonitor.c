@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 
     /*  ---     DECLARATIONS    --- */
 
-    int bloomSize;
+    int bloomSize, j;
     char* token;
 
     char* line = NULL;
@@ -59,9 +59,9 @@ int main(int argc, char** argv) {
             if (!strcmp(token, "/vaccineStatusBloom") || !strcmp(token, "vaccineStatusBloom")) {
                 char * tokens[3];
 
-                tokens[0] = strtok(NULL, " \n");
-                tokens[1] = strtok(NULL, " \n");
-                tokens[2] = strtok(NULL, " \n");
+                tokens[0] = strtok(NULL, " \n");    //citizenID
+                tokens[1] = strtok(NULL, " \n");    //virusName
+                tokens[2] = strtok(NULL, " \n");    //NULL
 
                 if (tokens[0] == NULL || tokens[1] == NULL || tokens[2] != NULL) {
                     printf("syntax error\n");
@@ -73,9 +73,9 @@ int main(int argc, char** argv) {
             if (!strcmp(token, "/vaccineStatus") || !strcmp(token, "vaccineStatus")) {
                 char * tokens[3];
 
-                tokens[0] = strtok(NULL, " \n");
-                tokens[1] = strtok(NULL, " \n");
-                tokens[2] = strtok(NULL, " \n");
+                tokens[0] = strtok(NULL, " \n");    //citizenID
+                tokens[1] = strtok(NULL, " \n");    //virusName
+                tokens[2] = strtok(NULL, " \n");    //NULL
 
                 if (tokens[0] == NULL) { // none => error
                     printf("syntax error\n");
@@ -91,19 +91,23 @@ int main(int argc, char** argv) {
             if (!strcmp(token, "/populationStatus") || !strcmp(token, "populationStatus")) {
                 char * tokens[5];
 
-                tokens[0] = strtok(NULL, " \n");
-                tokens[1] = strtok(NULL, " \n");
-                tokens[2] = strtok(NULL, " \n");
-                tokens[3] = strtok(NULL, " \n");
-                tokens[4] = strtok(NULL, " \n");
+                tokens[0] = strtok(NULL, " \n");    //country
+                tokens[1] = strtok(NULL, " \n");    //virusName
+                tokens[2] = strtok(NULL, " \n");    //date1
+                tokens[3] = strtok(NULL, " \n");    //date2
+                tokens[4] = strtok(NULL, " \n");    //NULL
 
                 if (tokens[0] == NULL) {
                     printf("syntax error\n");
+                } else if (tokens[0] != NULL && tokens[1] == NULL) {
+                    population_status_virus(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0]);
+                } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] == NULL) {
+                    population_status_country(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1]);
                 } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] == NULL) {
-                    population_status(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2]);
-                } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] == NULL) {
-                    population_status_country(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3]);
-                } else { // more than 2
+                    population_status_virus_dates(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2]);
+                } else if(tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] == NULL) {
+                    population_status_country_dates(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3]);
+                } else {
                     printf("syntax error\n");
                 }
             }
@@ -111,19 +115,23 @@ int main(int argc, char** argv) {
             if (!strcmp(token, "/popStatusByAge") || !strcmp(token, "popStatusByAge")) {
                 char * tokens[5];
 
-                tokens[0] = strtok(NULL, " \n");
-                tokens[1] = strtok(NULL, " \n");
-                tokens[2] = strtok(NULL, " \n");
-                tokens[3] = strtok(NULL, " \n");
-                tokens[4] = strtok(NULL, " \n");
+                tokens[0] = strtok(NULL, " \n");    //country
+                tokens[1] = strtok(NULL, " \n");    //virusName
+                tokens[2] = strtok(NULL, " \n");    //date1
+                tokens[3] = strtok(NULL, " \n");    //date2
+                tokens[4] = strtok(NULL, " \n");    //NULL
 
                 if (tokens[0] == NULL) {
                     printf("syntax error\n");
+                } else if (tokens[0] != NULL && tokens[1] == NULL) {
+                    pop_status_by_age_virus(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0]);
+                } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] == NULL) {
+                    pop_status_by_age_country(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1]);
                 } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] == NULL) {
-                    pop_status_by_age(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2]);
-                } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] == NULL) {
-                    pop_status_by_age_country(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3]);
-                } else { // more than 2
+                    pop_status_by_age_virus_dates(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2]);
+                } else if(tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] == NULL) {
+                    pop_status_by_age_country_dates(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3]);
+                } else {
                     printf("syntax error\n");
                 }
             }
@@ -132,21 +140,21 @@ int main(int argc, char** argv) {
                 char * tokens[9];
                 Record record = {0};
 
-                tokens[0] = strtok(NULL, " \n"); // ID
-                tokens[1] = strtok(NULL, " \n"); // FNAME
-                tokens[2] = strtok(NULL, " \n"); // LNAME
-                tokens[3] = strtok(NULL, " \n"); // Country
-                tokens[4] = strtok(NULL, " \n"); // Age
-                tokens[5] = strtok(NULL, " \n"); // SARS
-                tokens[6] = strtok(NULL, " \n"); // YES/NO
-                tokens[7] = strtok(NULL, " \n"); // 10-10-2010/-
-                tokens[8] = strtok(NULL, " \n"); // NULL
+                tokens[0] = strtok(NULL, " \n");    //citizenID
+                tokens[1] = strtok(NULL, " \n");    //firstName
+                tokens[2] = strtok(NULL, " \n");    //lastName
+                tokens[3] = strtok(NULL, " \n");    //country
+                tokens[4] = strtok(NULL, " \n");    //age
+                tokens[5] = strtok(NULL, " \n");    //virusName
+                tokens[6] = strtok(NULL, " \n");    //YES/NO
+                tokens[7] = strtok(NULL, " \n");    //date
+                tokens[8] = strtok(NULL, " \n");    //NULL
 
 
                 if (tokens[0] == NULL || tokens[8] != NULL) {
                     printf("syntax error\n");
                 } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] != NULL && tokens[5] != NULL && tokens[6] != NULL && tokens[7] != NULL) {
-                    // YES
+                    //YES
                     record.citizenID = malloc((strlen(tokens[0])) + 1);
                     record.firstName = malloc((strlen(tokens[1])) + 1);
                     record.lastName = malloc((strlen(tokens[2])) + 1);
@@ -162,9 +170,9 @@ int main(int argc, char** argv) {
 
                     record.dateVaccinated = malloc(sizeof (Date));
 
-                    char * token = strtok(tokens[7], "-");
+                    token = strtok(tokens[7], "-");
 
-                    int j = 0;
+                    j = 0;
 
                     while (token != NULL) {
                         if (j == 0)
@@ -180,7 +188,7 @@ int main(int argc, char** argv) {
                     insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, record, 0);
 
                     free_record(&record);
-                } else {
+                } else {    //NO
                     record.citizenID = malloc((strlen(tokens[0])) + 1);
                     record.firstName = malloc((strlen(tokens[1])) + 1);
                     record.lastName = malloc((strlen(tokens[2])) + 1);
@@ -204,13 +212,13 @@ int main(int argc, char** argv) {
             if (!strcmp(token, "/vaccinateNow") || !strcmp(token, "vaccinateNow")) {
                 char * tokens[7];
 
-                tokens[0] = strtok(NULL, " \n");
-                tokens[1] = strtok(NULL, " \n");
-                tokens[2] = strtok(NULL, " \n");
-                tokens[3] = strtok(NULL, " \n");
-                tokens[4] = strtok(NULL, " \n");
-                tokens[5] = strtok(NULL, " \n");
-                tokens[6] = strtok(NULL, " \n");
+                tokens[0] = strtok(NULL, " \n");    //citizenID
+                tokens[1] = strtok(NULL, " \n");    //firstName
+                tokens[2] = strtok(NULL, " \n");    //lastName
+                tokens[3] = strtok(NULL, " \n");    //country
+                tokens[4] = strtok(NULL, " \n");    //age
+                tokens[5] = strtok(NULL, " \n");    //virusName
+                tokens[6] = strtok(NULL, " \n");    //NULL
 
                 if (tokens[0] == NULL || tokens[1] == NULL || tokens[2] == NULL || tokens[3] == NULL || tokens[4] == NULL || tokens[5] == NULL || tokens[6] != NULL) {
                     printf("syntax error\n");
@@ -223,8 +231,8 @@ int main(int argc, char** argv) {
                     !strcmp(token, "/listNonVaccinatedPersons") || !strcmp(token, "listNonVaccinatedPersons")) {
                 char * tokens[2];
 
-                tokens[0] = strtok(NULL, " \n");
-                tokens[1] = strtok(NULL, " \n");
+                tokens[0] = strtok(NULL, " \n");    //virusName
+                tokens[1] = strtok(NULL, " \n");    //NULL
 
                 if (tokens[0] == NULL || tokens[1] != NULL) {
                     printf("syntax error\n");

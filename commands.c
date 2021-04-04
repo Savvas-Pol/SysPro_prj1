@@ -171,7 +171,6 @@ void vaccine_status_id(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens
     SkipListNode* citizen;
 
     for (i = 0; i < HASHTABLE_NODES; i++) {
-
         temp = ht_viruses->nodes[i];
         while (temp != NULL) {
             citizen = skiplist_search(temp->vaccinated_persons, citizenID);
@@ -189,11 +188,20 @@ void vaccine_status_id(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens
 }
 
 void population_status_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName) {
-    printf("CALLED population_status_virus: %s\n", virusName);
+
+    int i;
+    HashtableCountryNode* temp;
+
+    for(i = 0; i < HASHTABLE_NODES; i++) {
+        temp = ht_countries->nodes[i];
+        while (temp != NULL) {
+            population_status_country(ht_viruses, ht_citizens, ht_countries, bloomSize, temp->countryName, virusName);
+            temp = temp->next;
+        }
+    }
 }
 
 void population_status_country(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* country, char* virusName) {
-    printf("CALLED population_status_country: %s %s\n", country, virusName);
 
     HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
     int vaccinated_people = 0, total = 0;

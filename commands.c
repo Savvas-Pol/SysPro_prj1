@@ -125,7 +125,7 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 }
 
 void vaccine_status_bloom(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char * citizenID, char * virusName) {
-    printf("CALLED vaccine_status_bloom: %s , %s \n", citizenID, virusName);
+    // printf("CALLED vaccine_status_bloom: %s , %s \n", citizenID, virusName);
 
     HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 
@@ -143,7 +143,7 @@ void vaccine_status_bloom(HashtableVirus* ht_viruses, HashtableCitizen* ht_citiz
 }
 
 void vaccine_status_id_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char * citizenID, char * virusName) {
-    printf("CALLED vaccine_status: %s , %s \n", citizenID, virusName);
+    // printf("CALLED vaccine_status: %s , %s \n", citizenID, virusName);
 
     HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 
@@ -164,7 +164,7 @@ void vaccine_status_id_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
 }
 
 void vaccine_status_id(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char * citizenID) {
-    printf("CALLED vaccine_status: %s\n", citizenID);
+    // printf("CALLED vaccine_status: %s\n", citizenID);
 
     int i;
     HashtableVirusNode* temp;
@@ -194,6 +194,37 @@ void population_status_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
 
 void population_status_country(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* country, char* virusName) {
     printf("CALLED population_status_country: %s %s\n", country, virusName);
+
+    HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
+    int vaccinated_people = 0, total = 0;
+    double percentage;
+
+    if (virusNode != NULL) {
+        SkipListNode* temp = virusNode->vaccinated_persons->head->next[0];
+        while (temp != NULL) {  //check vaccinated_persons skiplist for vaccinated people
+            if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
+                if (!strcmp(temp->citizen->country, country)) {
+                    vaccinated_people++;
+                    total++;
+                }
+            }
+            temp = temp->next[0];
+        }
+
+        temp = virusNode->not_vaccinated_persons->head->next[0];
+        while (temp != NULL) {  //check not_vaccinated_persons skiplist to find total people for percentage
+            if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
+                if (!strcmp(temp->citizen->country, country)) {
+                    total++;
+                }
+            }
+            temp = temp->next[0];
+        }
+        percentage = (double)vaccinated_people / total * 100;
+        printf("%s %d %.2f%%\n", country, vaccinated_people, percentage);
+    } else {
+        printf("virus missing: %s \n", virusName);
+    }
 }
 
 void population_status_virus_dates(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName, char* date1, char* date2) {
@@ -221,7 +252,7 @@ void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCitize
 }
 
 void vaccinate_now(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char * citizenID, char * firstName, char * lastName, char * country, char * age, char * virusName) {
-    printf("CALLED vaccinate_now: %s %s %s %s %s %s\n", citizenID, firstName, lastName, country, age, virusName);
+    // printf("CALLED vaccinate_now: %s %s %s %s %s %s\n", citizenID, firstName, lastName, country, age, virusName);
 
     Date* d = get_current_date();
 
@@ -244,13 +275,13 @@ void vaccinate_now(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, Ha
 
     insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, record, 0);
 
-    free(d);
+    // free(d);
     
     free_record(&record);
 }
 
 void list_nonVaccinated_Persons(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName) {
-    printf("CALLED list_nonVaccinated_Persons: %s\n", virusName);
+    // printf("CALLED list_nonVaccinated_Persons: %s\n", virusName);
 
     HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 

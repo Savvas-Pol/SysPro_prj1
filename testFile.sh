@@ -7,6 +7,7 @@ counter=0
 arr[0]="YES"
 arr[1]="NO"
 
+declare -a temp_array
 declare -a viruses
 declare -a countries
 
@@ -27,19 +28,23 @@ if [[ $ARGC == $MAX_ARGS ]]; then	#check command line arguments
 				#rand=$[ $RANDOM % 2 ];
 				temp_array[0]=$((1 + $RANDOM % 9999));
 				echo -n ${temp_array[0]} >> inputFile; echo -n " " >> inputFile;		#citizenID
-				tr -dc A-Za-z </dev/urandom | head -c $((3 + $RANDOM % 10)) >> inputFile; echo -n " " >> inputFile;	#firstName
-				tr -dc A-Za-z </dev/urandom | head -c $((3 + $RANDOM % 10)) >> inputFile; echo -n " " >> inputFile;	#lastName
-				shuf -n 1 $2| tr -d '\n' >> inputFile; echo -n " " >> inputFile;		#country
+				tr -dc A-Za-z </dev/urandom | head -c $((3 + $RANDOM % 10)) >> inputFile; echo -n " " >> inputFile;		#firstName
+				tr -dc A-Za-z </dev/urandom | head -c $((3 + $RANDOM % 10)) >> inputFile; echo -n " " >> inputFile;		#lastName
+				echo ${countries[$RANDOM % ${#countries[@]} ]}| tr -d '\n' >> inputFile; echo -n " " >> inputFile;		#country
 				echo -n $((1 + $RANDOM % 120)) >> inputFile; echo -n " " >> inputFile;		#age
-				shuf -n 1 $1| tr -d '\n' >> inputFile; echo -n " " >> inputFile;		#virusName
+				echo ${viruses[$RANDOM % ${#viruses[@]} ]}| tr -d '\n' >> inputFile; echo -n " " >> inputFile;		#virusName
 				rand=$[ $RANDOM % 2 ];echo ${arr[$rand]}| tr -d '\n' >> inputFile;	#YES/NO
-				rand=$[ $RANDOM % 2 ];
-				case $rand in
-					"0")
-						echo -n " " >> inputFile; echo -n $((1 + $RANDOM % 30)) >> inputFile; echo -n "-" >> inputFile; echo -n $((1 + $RANDOM % 12)) >> inputFile; echo -n "-" >> inputFile;echo $((1900 + $RANDOM % 120)) >> inputFile;;
-					"1")
-						printf "\n" >> inputFile;
-				esac
+				if [[ $rand == 0 ]]; then				#if YES
+					rand=$[ $RANDOM % 2 ];
+					case $rand in
+						"0")
+							echo -n " " >> inputFile; echo -n $((1 + $RANDOM % 30)) >> inputFile; echo -n "-" >> inputFile; echo -n $((1 + $RANDOM % 12)) >> inputFile; echo -n "-" >> inputFile;echo $((1900 + $RANDOM % 120)) >> inputFile;;
+						"1")
+							printf "\n" >> inputFile;
+					esac
+				else
+					printf "\n" >> inputFile;
+				fi
 			else
 				printf "duplicatesAllowed NO\n";
 			fi

@@ -51,6 +51,7 @@ if [[ $ARGC == $MAX_ARGS ]]; then	#check command line arguments
 				while [[ " ${uniqueIDs[@]} " =~ " ${temp_array[0]} " ]]; do 	#check if array contains value
 				    temp_array[0]=$((1 + $RANDOM % 9999));
 				done
+				uniqueIDs+=(" ${temp_array[0]} ")
 				echo -n ${temp_array[0]} >> inputFile; echo -n " " >> inputFile;		#citizenID
 				tr -dc A-Za-z </dev/urandom | head -c $((3 + $RANDOM % 10)) >> inputFile; echo -n " " >> inputFile;		#firstName
 				tr -dc A-Za-z </dev/urandom | head -c $((3 + $RANDOM % 10)) >> inputFile; echo -n " " >> inputFile;		#lastName
@@ -77,3 +78,4 @@ if [[ $ARGC == $MAX_ARGS ]]; then	#check command line arguments
 else
 	printf "Wrong arguments!!!\n";
 fi
+

@@ -3,13 +3,24 @@
 > inputFile
 ARGC=$#
 MAX_ARGS=4
+counter=0
 arr[0]="YES"
 arr[1]="NO"
 
-declare -a temp_array
+declare -a viruses
+declare -a countries
 
 if [[ $ARGC == $MAX_ARGS ]]; then	#check command line arguments
 	if [[ $3 > 0 && $4 == 0 || $4 == 1 ]]; then	#check values of numbers given
+		while IFS= read -r line; do 			#read virusesFile line by line
+		    viruses[$counter]=$line;
+		    let counter=counter+1;
+		done < "$1"
+		counter=0
+		while IFS= read -r line; do 			#read countriesFile line by line
+		    countries[$counter]=$line;
+		    let counter=counter+1;
+		done < "$2"
 		for(( i=0; i<$3; i++ ))
 		do
 			if [[ $4 == 1 ]]; then	#if duplicatesAllowed

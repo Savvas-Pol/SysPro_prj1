@@ -66,7 +66,6 @@ HashtableCountryNode* hash_country_insert(HashtableCountry* ht, char* countryNam
 
     new->countryName = (char*) malloc(strlen(countryName) + 1);
     strcpy(new->countryName, countryName);
-    new->population = 1;
     new->next = ht->nodes[pos];
     ht->nodes[pos] = new;
 

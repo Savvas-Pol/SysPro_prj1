@@ -4,7 +4,6 @@
 #include <time.h>
 
 #include "help_functions.h"
-#include "list.h"
 #include "hashtable_virus.h"
 #include "hashtable_citizen.h"
 #include "hashtable_country.h"
@@ -41,22 +40,18 @@ int main(int argc, char** argv) {
         Record record;
 
         fill_record(line, &record); //create a temp record
-
         insert_citizen_record(ht_viruses, ht_citizens, ht_countries, bloomSize, record, 1);
-
         free_record(&record); //free temp record
     }
 
     while (1) { //commands from user
         printf("\nGive command: ");
-
         getline(&line, &len, stdin);
-
         token = strtok(line, " \n");
 
         if (token != NULL) {
 
-            if (!strcmp(token, "/vaccineStatusBloom") || !strcmp(token, "vaccineStatusBloom")) {
+            if (!strcmp(token, "/vaccineStatusBloom")) {
                 char * tokens[3];
 
                 tokens[0] = strtok(NULL, " \n");    //citizenID
@@ -70,25 +65,25 @@ int main(int argc, char** argv) {
                 }
             }
 
-            if (!strcmp(token, "/vaccineStatus") || !strcmp(token, "vaccineStatus")) {
+            if (!strcmp(token, "/vaccineStatus")) {
                 char * tokens[3];
 
                 tokens[0] = strtok(NULL, " \n");    //citizenID
                 tokens[1] = strtok(NULL, " \n");    //virusName
                 tokens[2] = strtok(NULL, " \n");    //NULL
 
-                if (tokens[0] == NULL) { // none => error
+                if (tokens[0] == NULL) {
                     printf("syntax error\n");
-                } else if (tokens[0] != NULL && tokens[1] == NULL) { // 1 argument -> id
+                } else if (tokens[0] != NULL && tokens[1] == NULL) {
                     vaccine_status_id(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0]);
-                } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] == NULL) { // 2 arguments -> id , virusName
+                } else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] == NULL) {
                     vaccine_status_id_virus(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1]);
                 } else { // more than 2
                     printf("syntax error\n");
                 }
             }
 
-            if (!strcmp(token, "/populationStatus") || !strcmp(token, "populationStatus")) {
+            if (!strcmp(token, "/populationStatus")) {
                 char * tokens[5];
 
                 tokens[0] = strtok(NULL, " \n");    //country
@@ -112,7 +107,7 @@ int main(int argc, char** argv) {
                 }
             }
 
-            if (!strcmp(token, "/popStatusByAge") || !strcmp(token, "popStatusByAge")) {
+            if (!strcmp(token, "/popStatusByAge")) {
                 char * tokens[5];
 
                 tokens[0] = strtok(NULL, " \n");    //country
@@ -136,7 +131,7 @@ int main(int argc, char** argv) {
                 }
             }
 
-            if (!strcmp(token, "/insertCitizenRecord") || !strcmp(token, "insertCitizenRecord")) {
+            if (!strcmp(token, "/insertCitizenRecord")) {
                 char * tokens[9];
                 Record record = {0};
 
@@ -209,7 +204,7 @@ int main(int argc, char** argv) {
                 }
             }
 
-            if (!strcmp(token, "/vaccinateNow") || !strcmp(token, "vaccinateNow")) {
+            if (!strcmp(token, "/vaccinateNow")) {
                 char * tokens[7];
 
                 tokens[0] = strtok(NULL, " \n");    //citizenID
@@ -227,8 +222,7 @@ int main(int argc, char** argv) {
                 }
             }
 
-            if (!strcmp(token, "/list-nonVaccinated-Persons") || !strcmp(token, "list-nonVaccinated-Persons") ||
-                    !strcmp(token, "/listNonVaccinatedPersons") || !strcmp(token, "listNonVaccinatedPersons")) {
+            if (!strcmp(token, "/list-nonVaccinated-Persons")) {
                 char * tokens[2];
 
                 tokens[0] = strtok(NULL, " \n");    //virusName
@@ -241,7 +235,7 @@ int main(int argc, char** argv) {
                 }
             }
 
-            if (!strcmp(token, "/exit") || !strcmp(token, "exit")) {
+            if (!strcmp(token, "/exit")) {
                 break;
             }
         }

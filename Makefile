@@ -1,16 +1,13 @@
 all: vaccineMonitor
 
-vaccineMonitor: vaccineMonitor.o help_functions.o list.o skiplist.o hashtable_virus.o hashtable_citizen.o hashtable_country.o BF.o date.o commands.o citizen.o
-	gcc vaccineMonitor.o help_functions.o list.o skiplist.o hashtable_virus.o hashtable_citizen.o hashtable_country.o BF.o date.o commands.o citizen.o -o vaccineMonitor
+vaccineMonitor: vaccineMonitor.o help_functions.o skiplist.o hashtable_virus.o hashtable_citizen.o hashtable_country.o BF.o date.o commands.o citizen.o
+	gcc vaccineMonitor.o help_functions.o skiplist.o hashtable_virus.o hashtable_citizen.o hashtable_country.o BF.o date.o commands.o citizen.o -o vaccineMonitor
 
 vaccineMonitor.o: vaccineMonitor.c
 	gcc -c vaccineMonitor.c
 
 help_functions.o: help_functions.c
 	gcc -c help_functions.c
-	
-list.o: list.c
-	gcc -c list.c
 	
 skiplist.o: skiplist.c
 	gcc -c skiplist.c
@@ -37,4 +34,4 @@ citizen.o: citizen.c
 	gcc -c citizen.c
 	
 clean:
-	rm -f vaccineMonitor vaccineMonitor.o help_functions.o list.o skiplist.o hashtable_virus.o hashtable_citizen.o hashtable_country.o BF.o date.o commands.o citizen.o
+	rm -f vaccineMonitor vaccineMonitor.o help_functions.o skiplist.o hashtable_virus.o hashtable_citizen.o hashtable_country.o BF.o date.o commands.o citizen.o

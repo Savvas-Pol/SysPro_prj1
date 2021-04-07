@@ -254,10 +254,14 @@ void population_status_country_dates(HashtableVirus* ht_viruses, HashtableCitize
     HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
     int vaccinated_people = 0, total = 0, j;
     double percentage;
-    Date* date_from = malloc(sizeof (Date));
-    Date* date_to = malloc(sizeof (Date));
+    Date* date_from = calloc(1, sizeof (Date));
+    Date* date_to = calloc(1, sizeof (Date));
 
-    char* token = strtok(date1, "-");
+    char tempdate1[11];
+    char tempdate2[11];
+    
+    strcpy(tempdate1, date1);
+    char* token = strtok(tempdate1, "-");
     j = 0;
     while (token != NULL) {
         if (j == 0)
@@ -269,8 +273,10 @@ void population_status_country_dates(HashtableVirus* ht_viruses, HashtableCitize
         token = strtok(NULL, "-\n");
         j++;
     }
+    
+    strcpy(tempdate2, date2);
 
-    token = strtok(date2, "-");
+    token = strtok(tempdate2, "-");
     j = 0;
     while (token != NULL) {
         if (j == 0)
@@ -289,9 +295,9 @@ void population_status_country_dates(HashtableVirus* ht_viruses, HashtableCitize
             if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
                 if (!strcmp(temp->citizen->country, country)) {
                     if((date_compare(temp->date, date_from)) == 1 && (date_compare(temp->date, date_to)) == -1) {
-                        vaccinated_people++;
-                        total++;
+                        vaccinated_people++;                        
                     }
+                    total++;
                 }
             }
             temp = temp->next[0];
@@ -311,6 +317,7 @@ void population_status_country_dates(HashtableVirus* ht_viruses, HashtableCitize
     } else {
         printf("virus missing: %s \n", virusName);
     }
+    
     free(date_from);
     free(date_to);
 }
@@ -397,10 +404,14 @@ void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCitize
     int sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, total = 0, j;
     double percentage1, percentage2, percentage3, percentage4;
 
-    Date* date_from = malloc(sizeof (Date));
-    Date* date_to = malloc(sizeof (Date));
+    Date* date_from = calloc(1, sizeof (Date));
+    Date* date_to = calloc(1, sizeof (Date));
 
-    char* token = strtok(date1, "-");
+    char tempdate1[11];
+    char tempdate2[11];
+    
+    strcpy(tempdate1, date1);
+    char* token = strtok(tempdate1, "-");
     j = 0;
     while (token != NULL) {
         if (j == 0)
@@ -413,7 +424,9 @@ void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCitize
         j++;
     }
 
-    token = strtok(date2, "-");
+    strcpy(tempdate2, date2);
+
+    token = strtok(tempdate2, "-");
     j = 0;
     while (token != NULL) {
         if (j == 0)
@@ -440,8 +453,8 @@ void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCitize
                             sum3++;
                         else
                             sum4++;
-                        total++;
                     }
+                    total++;
                 }
             }
             temp = temp->next[0];

@@ -4,8 +4,8 @@
 #include <stdbool.h>
 
 typedef struct BF {
-    char* vector;
-    int size;
+	char* vector;
+	int size;
 
 } BF;
 

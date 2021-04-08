@@ -6,16 +6,16 @@
 #include "constants.h"
 
 typedef struct SkipListNode {
-    Citizen* citizen;
-    Date* date;
+	Citizen* citizen;
+	Date* date;
 
-    struct SkipListNode **next;
+	struct SkipListNode **next;
 } SkipListNode;
 
 typedef struct SkipList {
-    struct SkipListNode * head;
-    struct SkipListNode * tail;
-    int maxLevel;
+	struct SkipListNode * head;
+	struct SkipListNode * tail;
+	int maxLevel;
 } SkipList;
 
 SkipList* skiplist_init(int maxLevel);

@@ -6,13 +6,13 @@
 #include "citizen.h"
 
 typedef struct HashtableCitizenNode {
-    Citizen * citizen;
-    struct HashtableCitizenNode* next; //pointer to next bucket node
+	Citizen * citizen;
+	struct HashtableCitizenNode* next; //pointer to next bucket node
 } HashtableCitizenNode;
 
 typedef struct HashtableCitizen {
-    HashtableCitizenNode** nodes;
-    int hash_nodes;
+	HashtableCitizenNode** nodes;
+	int hash_nodes;
 } HashtableCitizen;
 
 HashtableCitizen* hash_citizen_create(int hashNodes);

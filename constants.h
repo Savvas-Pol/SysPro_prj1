@@ -5,5 +5,5 @@
 #define HASHTABLE_NODES 100
 #define SKIP_LIST_MAX_LEVEL 23
 
-#endif /* CONSTANTS_H */
+#endif
 

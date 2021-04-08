@@ -4,15 +4,15 @@
 #include "date.h"
 
 typedef struct Record {
-    char* citizenID;
-    char* firstName;
-    char* lastName;
-    char* country;
-    int age;
-    char* virusName;
-    Date* dateVaccinated;
+	char* citizenID;
+	char* firstName;
+	char* lastName;
+	char* country;
+	int age;
+	char* virusName;
+	Date* dateVaccinated;
 
 } Record;
 
-#endif /* RECORD_H */
+#endif
 

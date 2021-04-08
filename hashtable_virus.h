@@ -6,16 +6,16 @@
 #include "citizen.h"
 
 typedef struct HashtableVirusNode {
-    char* virusName;
-    BF* bloom;
-    SkipList* vaccinated_persons;
-    SkipList* not_vaccinated_persons;
-    struct HashtableVirusNode* next; //pointer to next bucket node
+	char* virusName;
+	BF* bloom;
+	SkipList* vaccinated_persons;
+	SkipList* not_vaccinated_persons;
+	struct HashtableVirusNode* next; //pointer to next bucket node
 } HashtableVirusNode;
 
 typedef struct HashtableVirus {
-    HashtableVirusNode** nodes;
-    int hash_nodes;
+	HashtableVirusNode** nodes;
+	int hash_nodes;
 } HashtableVirus;
 
 int hash_function(unsigned char *str, int buckets);

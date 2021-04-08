@@ -2,11 +2,11 @@
 #define CITIZEN_H
 
 typedef struct Citizen {
-    char* citizenID;
-    char* firstName;
-    char* lastName;
-    char* country;
-    int age;
+	char* citizenID;
+	char* firstName;
+	char* lastName;
+	char* country;
+	int age;
 } Citizen;
 
 
@@ -15,5 +15,5 @@ void citizen_destroy( Citizen * c);
 
 
 
-#endif /* CITIZEN_H */
+#endif
 

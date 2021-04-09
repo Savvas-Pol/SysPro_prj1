@@ -6,7 +6,6 @@
 typedef struct BF {
 	char* vector;
 	int size;
-
 } BF;
 
 unsigned long djb2(unsigned char *str);

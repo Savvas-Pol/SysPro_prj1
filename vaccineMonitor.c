@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
 
 		if (token != NULL) {
 
-			if (!strcmp(token, "/vaccineStatusBloom") || !strcmp(token, "vaccineStatusBloom")) {
+			if (!strcmp(token, "/vaccineStatusBloom")) {
 				char* tokens[3];
 
 				tokens[0] = strtok(NULL, " \n");    //citizenID
@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
 				} else {
 					vaccine_status_bloom(ht_viruses, tokens[0], tokens[1]);
 				}
-			} else if (!strcmp(token, "/vaccineStatus") || !strcmp(token, "vaccineStatus")) {
+			} else if (!strcmp(token, "/vaccineStatus")) {
 				char* tokens[3];
 
 				tokens[0] = strtok(NULL, " \n");    //citizenID
@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
 				} else { // more than 2
 					printf("syntax error\n");
 				}
-			} else if (!strcmp(token, "/populationStatus") || !strcmp(token, "populationStatus")) {
+			} else if (!strcmp(token, "/populationStatus")) {
 				char* tokens[5];
 
 				tokens[0] = strtok(NULL, " \n");    //country
@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
 				} else {
 					printf("syntax error\n");
 				}
-			} else if (!strcmp(token, "/popStatusByAge") || !strcmp(token, "popStatusByAge")) {
+			} else if (!strcmp(token, "/popStatusByAge")) {
 				char* tokens[5];
 
 				tokens[0] = strtok(NULL, " \n");    //country
@@ -123,7 +123,7 @@ int main(int argc, char** argv) {
 				} else {
 					printf("syntax error\n");
 				}
-			} else if (!strcmp(token, "/insertCitizenRecord") || !strcmp(token, "insertCitizenRecord")) {
+			} else if (!strcmp(token, "/insertCitizenRecord")) {
 				char* tokens[9];
 				Record record = {0};
 
@@ -193,7 +193,7 @@ int main(int argc, char** argv) {
 
 					free_record(&record);
 				}
-			} else if (!strcmp(token, "/vaccinateNow") || !strcmp(token, "vaccinateNow")) {
+			} else if (!strcmp(token, "/vaccinateNow")) {
 				char* tokens[7];
 
 				tokens[0] = strtok(NULL, " \n");    //citizenID
@@ -209,8 +209,7 @@ int main(int argc, char** argv) {
 				} else {
 					vaccinate_now(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
 				}
-			} else if (!strcmp(token, "/list-nonVaccinated-Persons") || !strcmp(token, "list-nonVaccinated-Persons") ||
-					!strcmp(token, "/listNonVaccinatedPersons") || !strcmp(token, "listNonVaccinatedPersons")) {
+			} else if (!strcmp(token, "/list-nonVaccinated-Persons")) {
 				char* tokens[2];
 
 				tokens[0] = strtok(NULL, " \n");    //virusName
@@ -221,7 +220,7 @@ int main(int argc, char** argv) {
 				} else {
 					list_nonVaccinated_Persons(ht_viruses, tokens[0]);
 				}
-			} else if (!strcmp(token, "/exit") || !strcmp(token, "exit")) {
+			} else if (!strcmp(token, "/exit")) {
 				break;
 			}
 		}

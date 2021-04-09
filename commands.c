@@ -41,10 +41,10 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 						bloom_filter_insert(virusNode->bloom, c->citizenID, HASH_FUNCTIONS_K);
 						// printf("Vaccinating: %s %s %s \n", c->citizenID, c->firstName, c->lastName);
 					} else {
-						printf("Conflict on: %s %s %s \n", record.citizenID, record.firstName, record.lastName);
+						printf("Conflict on: %s %s %s\n", record.citizenID, record.firstName, record.lastName);
 					}
-				} else {
-					printf("Conflict on: %s %s %s \n", record.citizenID, record.firstName, record.lastName);
+				} else {		//while reading file
+					printf("Conflict on: %s %s %s\n", record.citizenID, record.firstName, record.lastName);
 				}
 				return;
 			}
@@ -55,7 +55,7 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 			}
 
 			if (!vaccinating && !vaccinated) {		//NO and not vaccinated
-				printf("Error: Already registered as not vaccinated \n");
+				printf("Error: Already registered as not vaccinated\n");
 				return;
 			}
 			exit(1);
@@ -69,7 +69,7 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 				} else {
 					skiplist_insert(virusNode->not_vaccinated_persons, cn->citizen, record.dateVaccinated, cn->citizen->citizenID);
 				}
-				printf("insert successful on existing citizen: %s %s %s %s \n", cn->citizen->citizenID, cn->citizen->firstName, cn->citizen->lastName, record.virusName);
+				//printf("insert successful on existing citizen: %s %s %s %s\n", cn->citizen->citizenID, cn->citizen->firstName, cn->citizen->lastName, record.virusName);
 				return;
 			} else {
 				Citizen* c = citizen_create(record.citizenID, record.firstName, record.lastName, record.country, record.age);
@@ -88,12 +88,12 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 					skiplist_insert(virusNode->not_vaccinated_persons, c, record.dateVaccinated, c->citizenID);
 				}
 
-				printf("insert successful on new citizen: %s %s %s %s \n", c->citizenID, c->firstName, c->lastName, record.virusName);
+				//printf("insert successful on new citizen: %s %s %s %s \n", c->citizenID, c->firstName, c->lastName, record.virusName);
 				return;
 			}
 		}
-	} else {
-		printf("new virus created: %s \n", record.virusName);
+	} else {		//if virus does not exist
+		//printf("new virus created: %s \n", record.virusName);
 
 		virusNode = hash_virus_insert(ht_viruses, record.virusName);
 		virusNode->bloom = bloom_init(bloomSize);
@@ -118,14 +118,14 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 		skiplist_insert(virusNode->not_vaccinated_persons, c, record.dateVaccinated, c->citizenID);
 	}
 
-	printf("insert successful on new citizen: %s %s %s %s \n", c->citizenID, c->firstName, c->lastName, record.virusName);
+	//printf("insert successful on new citizen: %s %s %s %s \n", c->citizenID, c->firstName, c->lastName, record.virusName);
 
 	return;
 }
 
 void vaccine_status_bloom(HashtableVirus* ht_viruses, char * citizenID, char * virusName) {
 
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
 
 	if (virusNode != NULL) {
 		int q = bloom_filter_check(virusNode->bloom, citizenID, HASH_FUNCTIONS_K);
@@ -142,10 +142,10 @@ void vaccine_status_bloom(HashtableVirus* ht_viruses, char * citizenID, char * v
 
 void vaccine_status_id_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, char * citizenID, char * virusName) {
 
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
-	HashtableCitizenNode * citizenNode = hash_citizen_search(ht_citizens, citizenID);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableCitizenNode* citizenNode = hash_citizen_search(ht_citizens, citizenID);
 
-	if(citizenNode != NULL) {
+	if (citizenNode != NULL) {
 		if (virusNode != NULL) {
 			SkipListNode* sn1 = skiplist_search(virusNode->vaccinated_persons, citizenID);
 
@@ -170,9 +170,9 @@ void vaccine_status_id(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens
 	int i;
 	HashtableVirusNode* temp;
 	SkipListNode* citizen;
-	HashtableCitizenNode * citizenNode = hash_citizen_search(ht_citizens, citizenID);
+	HashtableCitizenNode* citizenNode = hash_citizen_search(ht_citizens, citizenID);
 
-	if(citizenNode != NULL) {
+	if (citizenNode != NULL) {
 		for (i = 0; i < HASHTABLE_NODES; i++) {
 			temp = ht_viruses->nodes[i];
 			while (temp != NULL) {
@@ -197,10 +197,10 @@ void population_status_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
 
 	int i;
 	HashtableCountryNode* temp;
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
 
 	if (virusNode != NULL) {
-		for(i = 0; i < HASHTABLE_NODES; i++) {
+		for (i = 0; i < HASHTABLE_NODES; i++) {
 			temp = ht_countries->nodes[i];
 			while (temp != NULL) {
 				population_status_country(ht_viruses, ht_countries, temp->countryName, virusName);
@@ -214,8 +214,8 @@ void population_status_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
 
 void population_status_country(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* country, char* virusName) {
 
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
-	HashtableCountryNode * countryNode = hash_country_search(ht_countries, country);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableCountryNode* countryNode = hash_country_search(ht_countries, country);
 	int vaccinated_people = 0, total = 0;
 	double percentage;
 
@@ -242,7 +242,7 @@ void population_status_country(HashtableVirus* ht_viruses, HashtableCountry* ht_
 				temp = temp->next[0];
 			}
 			percentage = (double)vaccinated_people / total * 100;
-			if(total != 0)
+			if (total != 0)
 				printf("%s %d %.2f%%\n", country, vaccinated_people, percentage);
 			else
 				printf("%s %d 0.00%%\n", country, vaccinated_people);
@@ -258,10 +258,10 @@ void population_status_virus_dates(HashtableVirus* ht_viruses, HashtableCountry*
 	
 	int i;
 	HashtableCountryNode* temp;
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
 
 	if (virusNode != NULL) {
-		for(i = 0; i < HASHTABLE_NODES; i++) {
+		for (i = 0; i < HASHTABLE_NODES; i++) {
 			temp = ht_countries->nodes[i];
 			while (temp != NULL) {
 				population_status_country_dates(ht_viruses, ht_countries, temp->countryName, virusName, date1, date2);
@@ -275,14 +275,14 @@ void population_status_virus_dates(HashtableVirus* ht_viruses, HashtableCountry*
 
 void population_status_country_dates(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* country, char* virusName, char* date1, char* date2) {
 	
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
-	HashtableCountryNode * countryNode = hash_country_search(ht_countries, country);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableCountryNode* countryNode = hash_country_search(ht_countries, country);
 	int vaccinated_people = 0, total = 0, j;
 	double percentage;
 	Date* date_from = calloc(1, sizeof (Date));
 	Date* date_to = calloc(1, sizeof (Date));
 
-	char tempdate1[11];
+	char tempdate1[11];		//max possible digits of a date
 	char tempdate2[11];
 	
 	strcpy(tempdate1, date1);
@@ -300,7 +300,6 @@ void population_status_country_dates(HashtableVirus* ht_viruses, HashtableCountr
 	}
 	
 	strcpy(tempdate2, date2);
-
 	token = strtok(tempdate2, "-");
 	j = 0;
 	while (token != NULL) {
@@ -339,7 +338,7 @@ void population_status_country_dates(HashtableVirus* ht_viruses, HashtableCountr
 				temp = temp->next[0];
 			}
 			percentage = (double)vaccinated_people / total * 100;
-			if(total != 0)
+			if (total != 0)
 				printf("%s %d %.2f%%\n", country, vaccinated_people, percentage);
 			else
 				printf("%s %d 0.00%%\n", country, vaccinated_people);
@@ -358,10 +357,10 @@ void pop_status_by_age_virus(HashtableVirus* ht_viruses, HashtableCountry* ht_co
 
 	int i;
 	HashtableCountryNode* temp;
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
 
 	if (virusNode != NULL) {
-		for(i = 0; i < HASHTABLE_NODES; i++) {
+		for (i = 0; i < HASHTABLE_NODES; i++) {
 			temp = ht_countries->nodes[i];
 			while (temp != NULL) {
 				pop_status_by_age_country(ht_viruses, ht_countries, temp->countryName, virusName);
@@ -375,8 +374,8 @@ void pop_status_by_age_virus(HashtableVirus* ht_viruses, HashtableCountry* ht_co
 
 void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* country, char* virusName) {
 
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
-	HashtableCountryNode * countryNode = hash_country_search(ht_countries, country);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableCountryNode* countryNode = hash_country_search(ht_countries, country);
 	int sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, total1 = 0, total2 = 0, total3 = 0, total4 = 0;
 	double percentage1, percentage2, percentage3, percentage4;
 
@@ -386,15 +385,15 @@ void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCountry* ht_
 			while (temp != NULL) {  //check vaccinated_persons skiplist for vaccinated people
 				if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
 					if (!strcmp(temp->citizen->country, country)) {
-						if(temp->citizen->age > 0 && temp->citizen->age <= 20) {
+						if (temp->citizen->age > 0 && temp->citizen->age <= 20) {
 							sum1++;
 							total1++;
 						}
-						else if(temp->citizen->age > 20 && temp->citizen->age <= 40) {
+						else if (temp->citizen->age > 20 && temp->citizen->age <= 40) {
 							sum2++;
 							total2++;
 						}
-						else if(temp->citizen->age > 40 && temp->citizen->age <= 60) {
+						else if (temp->citizen->age > 40 && temp->citizen->age <= 60) {
 							sum3++;
 							total3++;
 						}
@@ -411,13 +410,13 @@ void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCountry* ht_
 			while (temp != NULL) {  //check not_vaccinated_persons skiplist to find total people for percentage
 				if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
 					if (!strcmp(temp->citizen->country, country)) {
-						if(temp->citizen->age > 0 && temp->citizen->age <= 20) {
+						if (temp->citizen->age > 0 && temp->citizen->age <= 20) {
 							total1++;
 						}
-						else if(temp->citizen->age > 20 && temp->citizen->age <= 40) {
+						else if (temp->citizen->age > 20 && temp->citizen->age <= 40) {
 							total2++;
 						}
-						else if(temp->citizen->age > 40 && temp->citizen->age <= 60) {
+						else if (temp->citizen->age > 40 && temp->citizen->age <= 60) {
 							total3++;
 						}
 						else {
@@ -432,19 +431,19 @@ void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCountry* ht_
 			percentage3 = (double)sum3 / total3 * 100;
 			percentage4 = (double)sum4 / total4 * 100;
 			printf("%s\n", country);
-			if(total1 != 0)
+			if (total1 != 0)
 				printf("0-20 %d %.2f%%\n", sum1, percentage1);
 			else
 				printf("0-20 %d 0.00%%\n", sum1);
-			if(total2 != 0)
+			if (total2 != 0)
 				printf("20-40 %d %.2f%%\n", sum2, percentage2);
 			else
 				printf("20-40 %d 0.00%%\n", sum2);
-			if(total3 != 0)
+			if (total3 != 0)
 				printf("40-60 %d %.2f%%\n", sum3, percentage3);
 			else
 				printf("40-60 %d 0.00%%\n", sum3);
-			if(total4 != 0)
+			if (total4 != 0)
 				printf("60+ %d %.2f%%\n", sum4, percentage4);
 			else
 				printf("60+ %d 0.00%%\n", sum4);
@@ -461,10 +460,10 @@ void pop_status_by_age_virus_dates(HashtableVirus* ht_viruses, HashtableCountry*
 	
 	int i;
 	HashtableCountryNode* temp;
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
 
 	if (virusNode != NULL) {
-		for(i = 0; i < HASHTABLE_NODES; i++) {
+		for (i = 0; i < HASHTABLE_NODES; i++) {
 			temp = ht_countries->nodes[i];
 			while (temp != NULL) {
 				pop_status_by_age_country_dates(ht_viruses, ht_countries, temp->countryName, virusName, date1, date2);
@@ -478,8 +477,8 @@ void pop_status_by_age_virus_dates(HashtableVirus* ht_viruses, HashtableCountry*
 
 void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* country, char* virusName, char* date1, char* date2) {
 	
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
-	HashtableCountryNode * countryNode = hash_country_search(ht_countries, country);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableCountryNode* countryNode = hash_country_search(ht_countries, country);
 	int sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, total1 = 0, total2 = 0, total3 = 0, total4 = 0, j;
 	double percentage1, percentage2, percentage3, percentage4;
 
@@ -524,16 +523,16 @@ void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCountr
 			while (temp != NULL) {  //check vaccinated_persons skiplist for vaccinated people
 				if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
 					if (!strcmp(temp->citizen->country, country)) {
-						if((date_compare(temp->date, date_from)) == 1 && (date_compare(temp->date, date_to)) == -1) {
-							if(temp->citizen->age > 0 && temp->citizen->age <= 20) {
+						if ((date_compare(temp->date, date_from)) == 1 && (date_compare(temp->date, date_to)) == -1) {
+							if (temp->citizen->age > 0 && temp->citizen->age <= 20) {
 								sum1++;
 								total1++;
 							}
-							else if(temp->citizen->age > 20 && temp->citizen->age <= 40) {
+							else if (temp->citizen->age > 20 && temp->citizen->age <= 40) {
 								sum2++;
 								total2++;
 							}
-							else if(temp->citizen->age > 40 && temp->citizen->age <= 60) {
+							else if (temp->citizen->age > 40 && temp->citizen->age <= 60) {
 								sum3++;
 								total3++;
 							}
@@ -551,13 +550,13 @@ void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCountr
 			while (temp != NULL) {  //check not_vaccinated_persons skiplist to find total people for percentage
 				if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
 					if (!strcmp(temp->citizen->country, country)) {
-						if(temp->citizen->age > 0 && temp->citizen->age <= 20) {
+						if (temp->citizen->age > 0 && temp->citizen->age <= 20) {
 							total1++;
 						}
-						else if(temp->citizen->age > 20 && temp->citizen->age <= 40) {
+						else if (temp->citizen->age > 20 && temp->citizen->age <= 40) {
 							total2++;
 						}
-						else if(temp->citizen->age > 40 && temp->citizen->age <= 60) {
+						else if (temp->citizen->age > 40 && temp->citizen->age <= 60) {
 							total3++;
 						}
 						else {
@@ -572,19 +571,19 @@ void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCountr
 			percentage3 = (double)sum3 / total3 * 100;
 			percentage4 = (double)sum4 / total4 * 100;
 			printf("%s\n", country);
-			if(total1 != 0)
+			if (total1 != 0)
 				printf("0-20 %d %.2f%%\n", sum1, percentage1);
 			else
 				printf("0-20 %d 0.00%%\n", sum1);
-			if(total2 != 0)
+			if (total2 != 0)
 				printf("20-40 %d %.2f%%\n", sum2, percentage2);
 			else
 				printf("20-40 %d 0.00%%\n", sum2);
-			if(total3 != 0)
+			if (total3 != 0)
 				printf("40-60 %d %.2f%%\n", sum3, percentage3);
 			else
 				printf("40-60 %d 0.00%%\n", sum3);
-			if(total4 != 0)
+			if (total4 != 0)
 				printf("60+ %d %.2f%%\n", sum4, percentage4);
 			else
 				printf("60+ %d 0.00%%\n", sum4);
@@ -628,7 +627,7 @@ void vaccinate_now(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, Ha
 
 void list_nonVaccinated_Persons(HashtableVirus* ht_viruses, char* virusName) {
 
-	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
+	HashtableVirusNode* virusNode = hash_virus_search(ht_viruses, virusName);
 
 	if (virusNode != NULL) {
 		SkipListNode* temp = virusNode->not_vaccinated_persons->head->next[0]; //first node after head

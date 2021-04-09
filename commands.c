@@ -58,7 +58,6 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 				printf("Error: Already registered as not vaccinated \n");
 				return;
 			}
-			printf("oops \n");
 			exit(1);
 		} else {
 			HashtableCitizenNode* cn = hash_citizen_search(ht_citizens, record.citizenID);

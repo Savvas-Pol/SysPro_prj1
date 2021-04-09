@@ -124,7 +124,7 @@ void insert_citizen_record(HashtableVirus* ht_viruses, HashtableCitizen* ht_citi
 	return;
 }
 
-void vaccine_status_bloom(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char * citizenID, char * virusName) {
+void vaccine_status_bloom(HashtableVirus* ht_viruses, char * citizenID, char * virusName) {
 
 	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 
@@ -141,7 +141,7 @@ void vaccine_status_bloom(HashtableVirus* ht_viruses, HashtableCitizen* ht_citiz
 	}
 }
 
-void vaccine_status_id_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char * citizenID, char * virusName) {
+void vaccine_status_id_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, char * citizenID, char * virusName) {
 
 	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 	HashtableCitizenNode * citizenNode = hash_citizen_search(ht_citizens, citizenID);
@@ -166,7 +166,7 @@ void vaccine_status_id_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
 	}
 }
 
-void vaccine_status_id(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char * citizenID) {
+void vaccine_status_id(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, char * citizenID) {
 
 	int i;
 	HashtableVirusNode* temp;
@@ -194,7 +194,7 @@ void vaccine_status_id(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens
 	}
 }
 
-void population_status_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName) {
+void population_status_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, char* virusName) {
 
 	int i;
 	HashtableCountryNode* temp;
@@ -204,7 +204,7 @@ void population_status_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
 		for(i = 0; i < HASHTABLE_NODES; i++) {
 			temp = ht_countries->nodes[i];
 			while (temp != NULL) {
-				population_status_country(ht_viruses, ht_citizens, ht_countries, bloomSize, temp->countryName, virusName);
+				population_status_country(ht_viruses, ht_countries, temp->countryName, virusName);
 				temp = temp->next;
 			}
 		}
@@ -213,7 +213,7 @@ void population_status_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
 	}
 }
 
-void population_status_country(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* country, char* virusName) {
+void population_status_country(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* country, char* virusName) {
 
 	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 	HashtableCountryNode * countryNode = hash_country_search(ht_countries, country);
@@ -252,7 +252,7 @@ void population_status_country(HashtableVirus* ht_viruses, HashtableCitizen* ht_
 	}
 }
 
-void population_status_virus_dates(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName, char* date1, char* date2) {
+void population_status_virus_dates(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* virusName, char* date1, char* date2) {
 	
 	int i;
 	HashtableCountryNode* temp;
@@ -262,7 +262,7 @@ void population_status_virus_dates(HashtableVirus* ht_viruses, HashtableCitizen*
 		for(i = 0; i < HASHTABLE_NODES; i++) {
 			temp = ht_countries->nodes[i];
 			while (temp != NULL) {
-				population_status_country_dates(ht_viruses, ht_citizens, ht_countries, bloomSize, temp->countryName, virusName, date1, date2);
+				population_status_country_dates(ht_viruses, ht_countries, temp->countryName, virusName, date1, date2);
 				temp = temp->next;
 			}
 		}
@@ -271,7 +271,7 @@ void population_status_virus_dates(HashtableVirus* ht_viruses, HashtableCitizen*
 	}
 }
 
-void population_status_country_dates(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* country, char* virusName, char* date1, char* date2) {
+void population_status_country_dates(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* country, char* virusName, char* date1, char* date2) {
 	
 	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 	HashtableCountryNode * countryNode = hash_country_search(ht_countries, country);
@@ -349,7 +349,7 @@ void population_status_country_dates(HashtableVirus* ht_viruses, HashtableCitize
 	free(date_to);
 }
 
-void pop_status_by_age_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName) {
+void pop_status_by_age_virus(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* virusName) {
 
 	int i;
 	HashtableCountryNode* temp;
@@ -359,7 +359,7 @@ void pop_status_by_age_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
 		for(i = 0; i < HASHTABLE_NODES; i++) {
 			temp = ht_countries->nodes[i];
 			while (temp != NULL) {
-				pop_status_by_age_country(ht_viruses, ht_citizens, ht_countries, bloomSize, temp->countryName, virusName);
+				pop_status_by_age_country(ht_viruses, ht_countries, temp->countryName, virusName);
 				temp = temp->next;
 			}
 		}
@@ -368,7 +368,7 @@ void pop_status_by_age_virus(HashtableVirus* ht_viruses, HashtableCitizen* ht_ci
 	}
 }
 
-void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* country, char* virusName) {
+void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* country, char* virusName) {
 
 	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 	HashtableCountryNode * countryNode = hash_country_search(ht_countries, country);
@@ -422,7 +422,7 @@ void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCitizen* ht_
 
 }
 
-void pop_status_by_age_virus_dates(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName, char* date1, char* date2) {
+void pop_status_by_age_virus_dates(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* virusName, char* date1, char* date2) {
 	
 	int i;
 	HashtableCountryNode* temp;
@@ -432,7 +432,7 @@ void pop_status_by_age_virus_dates(HashtableVirus* ht_viruses, HashtableCitizen*
 		for(i = 0; i < HASHTABLE_NODES; i++) {
 			temp = ht_countries->nodes[i];
 			while (temp != NULL) {
-				pop_status_by_age_country_dates(ht_viruses, ht_citizens, ht_countries, bloomSize, temp->countryName, virusName, date1, date2);
+				pop_status_by_age_country_dates(ht_viruses, ht_countries, temp->countryName, virusName, date1, date2);
 				temp = temp->next;
 			}
 		}
@@ -441,7 +441,7 @@ void pop_status_by_age_virus_dates(HashtableVirus* ht_viruses, HashtableCitizen*
 	}
 }
 
-void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* country, char* virusName, char* date1, char* date2) {
+void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCountry* ht_countries, char* country, char* virusName, char* date1, char* date2) {
 	
 	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 	HashtableCountryNode * countryNode = hash_country_search(ht_countries, country);
@@ -561,7 +561,7 @@ void vaccinate_now(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, Ha
 	free_record(&record);
 }
 
-void list_nonVaccinated_Persons(HashtableVirus* ht_viruses, HashtableCitizen* ht_citizens, HashtableCountry* ht_countries, int bloomSize, char* virusName) {
+void list_nonVaccinated_Persons(HashtableVirus* ht_viruses, char* virusName) {
 
 	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 

@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
 				if (tokens[0] == NULL || tokens[1] == NULL || tokens[2] != NULL) {
 					printf("syntax error\n");
 				} else {
-					vaccine_status_bloom(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1]);
+					vaccine_status_bloom(ht_viruses, tokens[0], tokens[1]);
 				}
 			}
 
@@ -75,9 +75,9 @@ int main(int argc, char** argv) {
 				if (tokens[0] == NULL) {
 					printf("syntax error\n");
 				} else if (tokens[0] != NULL && tokens[1] == NULL) {
-					vaccine_status_id(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0]);
+					vaccine_status_id(ht_viruses, ht_citizens, tokens[0]);
 				} else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] == NULL) {
-					vaccine_status_id_virus(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1]);
+					vaccine_status_id_virus(ht_viruses, ht_citizens, tokens[0], tokens[1]);
 				} else { // more than 2
 					printf("syntax error\n");
 				}
@@ -95,13 +95,13 @@ int main(int argc, char** argv) {
 				if (tokens[0] == NULL) {
 					printf("syntax error\n");
 				} else if (tokens[0] != NULL && tokens[1] == NULL) {
-					population_status_virus(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0]);
+					population_status_virus(ht_viruses, ht_citizens, ht_countries, tokens[0]);
 				} else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] == NULL) {
-					population_status_country(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1]);
+					population_status_country(ht_viruses, ht_countries, tokens[0], tokens[1]);
 				} else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] == NULL) {
-					population_status_virus_dates(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2]);
+					population_status_virus_dates(ht_viruses, ht_countries, tokens[0], tokens[1], tokens[2]);
 				} else if(tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] == NULL) {
-					population_status_country_dates(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3]);
+					population_status_country_dates(ht_viruses, ht_countries, tokens[0], tokens[1], tokens[2], tokens[3]);
 				} else {
 					printf("syntax error\n");
 				}
@@ -119,13 +119,13 @@ int main(int argc, char** argv) {
 				if (tokens[0] == NULL) {
 					printf("syntax error\n");
 				} else if (tokens[0] != NULL && tokens[1] == NULL) {
-					pop_status_by_age_virus(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0]);
+					pop_status_by_age_virus(ht_viruses, ht_countries, tokens[0]);
 				} else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] == NULL) {
-					pop_status_by_age_country(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1]);
+					pop_status_by_age_country(ht_viruses, ht_countries, tokens[0], tokens[1]);
 				} else if (tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] == NULL) {
-					pop_status_by_age_virus_dates(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2]);
+					pop_status_by_age_virus_dates(ht_viruses, ht_countries, tokens[0], tokens[1], tokens[2]);
 				} else if(tokens[0] != NULL && tokens[1] != NULL && tokens[2] != NULL && tokens[3] != NULL && tokens[4] == NULL) {
-					pop_status_by_age_country_dates(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0], tokens[1], tokens[2], tokens[3]);
+					pop_status_by_age_country_dates(ht_viruses, ht_countries, tokens[0], tokens[1], tokens[2], tokens[3]);
 				} else {
 					printf("syntax error\n");
 				}
@@ -232,7 +232,7 @@ int main(int argc, char** argv) {
 				if (tokens[0] == NULL || tokens[1] != NULL) {
 					printf("syntax error\n");
 				} else {
-					list_nonVaccinated_Persons(ht_viruses, ht_citizens, ht_countries, bloomSize, tokens[0]);
+					list_nonVaccinated_Persons(ht_viruses, tokens[0]);
 				}
 			}
 

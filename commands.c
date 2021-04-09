@@ -371,7 +371,7 @@ void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCountry* ht_
 
 	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 	HashtableCountryNode * countryNode = hash_country_search(ht_countries, country);
-	int sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, total = 0;
+	int sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, total1 = 0, total2 = 0, total3 = 0, total4 = 0;
 	double percentage1, percentage2, percentage3, percentage4;
 
 	if (countryNode != NULL) {
@@ -380,15 +380,22 @@ void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCountry* ht_
 			while (temp != NULL) {  //check vaccinated_persons skiplist for vaccinated people
 				if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
 					if (!strcmp(temp->citizen->country, country)) {
-						if(temp->citizen->age > 0 && temp->citizen->age <= 20)
+						if(temp->citizen->age > 0 && temp->citizen->age <= 20) {
 							sum1++;
-						else if(temp->citizen->age > 20 && temp->citizen->age <= 40)
+							total1++;
+						}
+						else if(temp->citizen->age > 20 && temp->citizen->age <= 40) {
 							sum2++;
-						else if(temp->citizen->age > 40 && temp->citizen->age <= 60)
+							total2++;
+						}
+						else if(temp->citizen->age > 40 && temp->citizen->age <= 60) {
 							sum3++;
-						else
+							total3++;
+						}
+						else {
 							sum4++;
-						total++;
+							total4++;
+						}
 					}
 				}
 				temp = temp->next[0];
@@ -398,15 +405,26 @@ void pop_status_by_age_country(HashtableVirus* ht_viruses, HashtableCountry* ht_
 			while (temp != NULL) {  //check not_vaccinated_persons skiplist to find total people for percentage
 				if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
 					if (!strcmp(temp->citizen->country, country)) {
-						total++;
+						if(temp->citizen->age > 0 && temp->citizen->age <= 20) {
+							total1++;
+						}
+						else if(temp->citizen->age > 20 && temp->citizen->age <= 40) {
+							total2++;
+						}
+						else if(temp->citizen->age > 40 && temp->citizen->age <= 60) {
+							total3++;
+						}
+						else {
+							total4++;
+						}
 					}
 				}
 				temp = temp->next[0];
 			}
-			percentage1 = (double)sum1 / total * 100;
-			percentage2 = (double)sum2 / total * 100;
-			percentage3 = (double)sum3 / total * 100;
-			percentage4 = (double)sum4 / total * 100;
+			percentage1 = (double)sum1 / total1 * 100;
+			percentage2 = (double)sum2 / total2 * 100;
+			percentage3 = (double)sum3 / total3 * 100;
+			percentage4 = (double)sum4 / total4 * 100;
 			printf("%s\n", country);
 			printf("0-20 %d %.2f%%\n", sum1, percentage1);
 			printf("20-40 %d %.2f%%\n", sum2, percentage2);
@@ -444,7 +462,7 @@ void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCountr
 	
 	HashtableVirusNode * virusNode = hash_virus_search(ht_viruses, virusName);
 	HashtableCountryNode * countryNode = hash_country_search(ht_countries, country);
-	int sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, total = 0, j;
+	int sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, total1 = 0, total2 = 0, total3 = 0, total4 = 0, j;
 	double percentage1, percentage2, percentage3, percentage4;
 
 	Date* date_from = calloc(1, sizeof (Date));
@@ -489,16 +507,23 @@ void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCountr
 				if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
 					if (!strcmp(temp->citizen->country, country)) {
 						if((date_compare(temp->date, date_from)) == 1 && (date_compare(temp->date, date_to)) == -1) {
-							if(temp->citizen->age > 0 && temp->citizen->age <= 20)
+							if(temp->citizen->age > 0 && temp->citizen->age <= 20) {
 								sum1++;
-							else if(temp->citizen->age > 20 && temp->citizen->age <= 40)
+								total1++;
+							}
+							else if(temp->citizen->age > 20 && temp->citizen->age <= 40) {
 								sum2++;
-							else if(temp->citizen->age > 40 && temp->citizen->age <= 60)
+								total2++;
+							}
+							else if(temp->citizen->age > 40 && temp->citizen->age <= 60) {
 								sum3++;
-							else
+								total3++;
+							}
+							else {
 								sum4++;
+								total4++;
+							}
 						}
-						total++;
 					}
 				}
 				temp = temp->next[0];
@@ -508,15 +533,26 @@ void pop_status_by_age_country_dates(HashtableVirus* ht_viruses, HashtableCountr
 			while (temp != NULL) {  //check not_vaccinated_persons skiplist to find total people for percentage
 				if (strcmp(temp->citizen->citizenID, "ZZZZZ") != 0) {
 					if (!strcmp(temp->citizen->country, country)) {
-						total++;
+						if(temp->citizen->age > 0 && temp->citizen->age <= 20) {
+							total1++;
+						}
+						else if(temp->citizen->age > 20 && temp->citizen->age <= 40) {
+							total2++;
+						}
+						else if(temp->citizen->age > 40 && temp->citizen->age <= 60) {
+							total3++;
+						}
+						else {
+							total4++;
+						}
 					}
 				}
 				temp = temp->next[0];
 			}
-			percentage1 = (double)sum1 / total * 100;
-			percentage2 = (double)sum2 / total * 100;
-			percentage3 = (double)sum3 / total * 100;
-			percentage4 = (double)sum4 / total * 100;
+			percentage1 = (double)sum1 / total1 * 100;
+			percentage2 = (double)sum2 / total2 * 100;
+			percentage3 = (double)sum3 / total3 * 100;
+			percentage4 = (double)sum4 / total4 * 100;
 			printf("%s\n", country);
 			printf("0-20 %d %.2f%%\n", sum1, percentage1);
 			printf("20-40 %d %.2f%%\n", sum2, percentage2);

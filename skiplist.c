@@ -41,9 +41,9 @@ void skiplist_destroy(SkipList* sl) {		//destroy
 	while (temp != NULL) {
 		l = temp->next[0];
 
-		if (temp->date) {
+		if (temp->date)
 			free(temp->date);
-		}
+		
 		free(temp->next);
 		free(temp);
 
@@ -65,7 +65,7 @@ SkipListNode* skiplist_search(SkipList* sl, char * id) {
 
 	l = l->next[0];
 
-	if(!strcmp(l->citizen->citizenID, id))
+	if (!strcmp(l->citizen->citizenID, id))
 		return l;
 	else
 		return NULL;

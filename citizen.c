@@ -3,8 +3,8 @@
 
 #include "citizen.h"
 
-Citizen * citizen_create(char* citizenID, char* firstName, char* lastName, char* country, int age) {
-	Citizen * c = (Citizen *) calloc(1, sizeof (Citizen));
+Citizen* citizen_create(char* citizenID, char* firstName, char* lastName, char* country, int age) {	//creates new citizen
+	Citizen* c = (Citizen*) calloc(1, sizeof (Citizen));
 
 	c->citizenID = strdup(citizenID);
 	c->firstName = strdup(firstName);
@@ -15,7 +15,7 @@ Citizen * citizen_create(char* citizenID, char* firstName, char* lastName, char*
 	return c;
 }
 
-void citizen_destroy(Citizen * c) {
+void citizen_destroy(Citizen* c) {		//free
 	free(c->citizenID);
 	free(c->country);
 	free(c->firstName);

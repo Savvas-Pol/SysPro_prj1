@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
 		if (token != NULL) {
 
 			if (!strcmp(token, "/vaccineStatusBloom") || !strcmp(token, "vaccineStatusBloom")) {
-				char * tokens[3];
+				char* tokens[3];
 
 				tokens[0] = strtok(NULL, " \n");    //citizenID
 				tokens[1] = strtok(NULL, " \n");    //virusName
@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
 			}
 
 			if (!strcmp(token, "/vaccineStatus") || !strcmp(token, "vaccineStatus")) {
-				char * tokens[3];
+				char* tokens[3];
 
 				tokens[0] = strtok(NULL, " \n");    //citizenID
 				tokens[1] = strtok(NULL, " \n");    //virusName
@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 			}
 
 			if (!strcmp(token, "/populationStatus") || !strcmp(token, "populationStatus")) {
-				char * tokens[5];
+				char* tokens[5];
 
 				tokens[0] = strtok(NULL, " \n");    //country
 				tokens[1] = strtok(NULL, " \n");    //virusName
@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
 			}
 
 			if (!strcmp(token, "/popStatusByAge") || !strcmp(token, "popStatusByAge")) {
-				char * tokens[5];
+				char* tokens[5];
 
 				tokens[0] = strtok(NULL, " \n");    //country
 				tokens[1] = strtok(NULL, " \n");    //virusName
@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
 			}
 
 			if (!strcmp(token, "/insertCitizenRecord") || !strcmp(token, "insertCitizenRecord")) {
-				char * tokens[9];
+				char* tokens[9];
 				Record record = {0};
 
 				tokens[0] = strtok(NULL, " \n");    //citizenID
@@ -205,7 +205,7 @@ int main(int argc, char** argv) {
 			}
 
 			if (!strcmp(token, "/vaccinateNow") || !strcmp(token, "vaccinateNow")) {
-				char * tokens[7];
+				char* tokens[7];
 
 				tokens[0] = strtok(NULL, " \n");    //citizenID
 				tokens[1] = strtok(NULL, " \n");    //firstName
@@ -224,7 +224,7 @@ int main(int argc, char** argv) {
 
 			if (!strcmp(token, "/list-nonVaccinated-Persons") || !strcmp(token, "list-nonVaccinated-Persons") ||
 					!strcmp(token, "/listNonVaccinatedPersons") || !strcmp(token, "listNonVaccinatedPersons")) {
-				char * tokens[2];
+				char* tokens[2];
 
 				tokens[0] = strtok(NULL, " \n");    //virusName
 				tokens[1] = strtok(NULL, " \n");    //NULL

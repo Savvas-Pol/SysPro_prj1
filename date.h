@@ -7,11 +7,8 @@ typedef struct Date {
 	int year;
 } Date;
 
-int date_compare(Date* d1, Date* d2);
-
-Date* get_current_date();
-
-Date * duplicateDate(Date *d);
+int date_compare(Date* d1, Date* d2); //returns -1 if d1<d2, 1 if d1>d2, 0 otherwise
+Date* get_current_date();	//return current date
+Date* duplicateDate(Date* d);	//duplicates date given
 
 #endif
-

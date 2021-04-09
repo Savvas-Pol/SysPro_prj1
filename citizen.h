@@ -9,11 +9,7 @@ typedef struct Citizen {
 	int age;
 } Citizen;
 
-
-Citizen * citizen_create( char* citizenID, char* firstName, char* lastName, char* country, int age);
-void citizen_destroy( Citizen * c);
-
-
+Citizen* citizen_create( char* citizenID, char* firstName, char* lastName, char* country, int age);	//creates new citizen
+void citizen_destroy(Citizen* c);		//free
 
 #endif
-

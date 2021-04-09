@@ -29,7 +29,7 @@ unsigned long hash_i(unsigned char *str, unsigned int i) {
 	return djb2(str) + i * sdbm(str) + i * i;
 }
 
-BF* bloom_init(int bloomSize) {
+BF* bloom_init(int bloomSize) {			//initialize bloom filter with given size
 
 	BF* bloom;
 
@@ -49,12 +49,12 @@ BF* bloom_init(int bloomSize) {
 
 }
 
-void bloom_destroy(BF * b) {
+void bloom_destroy(BF * b) {		//destroy
 	free(b->vector);
 	free(b);
 }
 
-void bloom_filter_insert(BF* b, char* str, int K) {
+void bloom_filter_insert(BF* b, char* str, int K) {		//insert in bloom filter
 	int pos, index, offset;
 	char mask;
 	int bits = 8*b->size;
@@ -66,11 +66,9 @@ void bloom_filter_insert(BF* b, char* str, int K) {
 		mask = 1 << offset;
 		b->vector[index] = b->vector[index] | mask;
 	}
-
 }
 
-
-int bloom_filter_check(BF* b, char* str, int K) {
+int bloom_filter_check(BF* b, char* str, int K) {		//checks bloom filter and returns 0 if NO or 1 if MAYBE
 	int pos, index, offset;
 	char mask;
 	int bits = 8*b->size;
@@ -84,9 +82,9 @@ int bloom_filter_check(BF* b, char* str, int K) {
 		res = b->vector[index] & mask;
 		
 		if (res == 0) {
-			return 0; // NO
+			return 0;		//NO
 		}
 	}
 	
-	return 1; // MAYBE
+	return 1;		//MAYBE
 }

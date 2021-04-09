@@ -15,4 +15,3 @@ typedef struct Record {
 } Record;
 
 #endif
-

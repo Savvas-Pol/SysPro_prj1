@@ -27,7 +27,7 @@ int date_compare(Date* d1, Date* d2) { //returns -1 if d1<d2, 1 if d1>d2, 0 othe
 	}
 }
 
-Date* get_current_date() {
+Date* get_current_date() {	//return current date
 
 	Date* today = (Date *) calloc(1, sizeof (Date));
 	time_t t = time(NULL);
@@ -40,16 +40,17 @@ Date* get_current_date() {
 	return today;
 }
 
-Date * duplicateDate(Date *d) {
-	if (d == NULL) {
+Date* duplicateDate(Date* d) {	//duplicates date given
+
+	if (d != NULL) {
+		Date* copy = calloc(1, sizeof(Date));
+	
+		copy->day = d->day;
+		copy->month = d->month;
+		copy->year = d->year;
+	
+		return copy;
+	} else {
 		return NULL;
 	}
-	
-	Date * copy = calloc(1, sizeof(Date));
-	
-	copy->day = d->day;
-	copy->month = d->month;
-	copy->year = d->year;
-	
-	return copy;
 }

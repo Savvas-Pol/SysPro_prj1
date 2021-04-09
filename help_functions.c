@@ -5,7 +5,7 @@
 #include "help_functions.h"
 
 
-FILE* read_arguments(int argc, char** argv, int* bloomSize) {
+FILE* read_arguments(int argc, char** argv, int* bloomSize) {		//reads arguments from command line
 	int i;
 
 	FILE* citizenRecordsFile;
@@ -28,7 +28,7 @@ FILE* read_arguments(int argc, char** argv, int* bloomSize) {
 	return citizenRecordsFile;
 }
 
-void fill_record(char* line, Record* temp) {
+void fill_record(char* line, Record* temp) {		//breaks line into tokens and creates a new record
 	int i = 0, j;
 
 	char* token;
@@ -81,7 +81,7 @@ void fill_record(char* line, Record* temp) {
 	}
 }
 
-bool find_conflict(Record record, Citizen* citizen) {
+bool find_conflict(Record record, Citizen* citizen) {			//finds if any value is different from that of the citizen
 	if (strcmp(record.citizenID, citizen->citizenID) != 0) {
 		return true;
 	}
@@ -97,11 +97,10 @@ bool find_conflict(Record record, Citizen* citizen) {
 	if (record.age != citizen->age) {
 		return true;
 	}
-
 	return false;
 }
 
-void free_record(Record* temp) {
+void free_record(Record* temp) {		//free
 	free(temp->citizenID);
 	free(temp->country);
 	free(temp->firstName);
